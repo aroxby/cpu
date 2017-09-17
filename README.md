@@ -1,6 +1,6 @@
 # Virtual CPU
 This my attempt at building a virtual CPU.  This is just for fun and learning.
-The entire virtual machine will be implemented in sofware.
+The entire virtual machine will be implemented in software.
 
 #### Extra Features
 
@@ -32,7 +32,7 @@ The entire virtual machine will be implemented in sofware.
   * 7 - User Flag B (BF)
 * Bit ordering
   * LSB
-* Special Purpose Regisers:
+* Special Purpose Registers:
   * IP (R0)
   * BP (R1)
   * SP (R2)
