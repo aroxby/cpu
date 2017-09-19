@@ -21,6 +21,7 @@ The entire virtual machine will be implemented in sofware.
 
 * Register width
   * 8-bit
+
 * Flags:
   * 0 - Carry (CF)
   * 1 - Zero (ZF)
@@ -30,8 +31,10 @@ The entire virtual machine will be implemented in sofware.
   * 5 - Overflow (OF)
   * 6 - User Flag A (AF)
   * 7 - User Flag B (BF)
+
 * Bit ordering
   * LSB
+
 * Special Purpose Regisers:
   * IP (R0)
   * BP (R1)
@@ -41,6 +44,7 @@ The entire virtual machine will be implemented in sofware.
   * Reserved (R5)
   * Reserved (R6)
   * Reserved (R7)
+
 * General Purpose Registers:
   * R8-RF
 
@@ -53,6 +57,7 @@ The entire virtual machine will be implemented in sofware.
   * 5 - Reserved
   * 6 - Reserved
   * 7 - Reserved
+
 * List of instructions (from a high level):
   * MOV
   * JMP
