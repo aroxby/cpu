@@ -12,7 +12,7 @@ The entire virtual machine will be implemented in sofware.
   * Think, creating a small CPU which only does IN/OUT and
   adding that to an otherwise complete CPU
 
-##### Feature idea: Flexible address/register width
+##### Flexible Address/Register Width
 * Allow the CPU to switch from 16 to 32 bit mode (for example) and back again
   * Like modern CPUs allow for 32-bit threads in 64-bit mode
   (probably with page attributes)
