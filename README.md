@@ -42,7 +42,7 @@ The entire virtual machine will be implemented in sofware.
   * Reserved (R6)
   * Reserved (R7)
 * General Purpose Registers:
-  * R8-R255 (yeah, 256 registers, because I'm virtual, sucka!)
+  * R8-RF
 
 * CPU Interrupts:
   * 0 - Double Fault
@@ -58,18 +58,19 @@ The entire virtual machine will be implemented in sofware.
   * JMP
   * CALL
   * RET
-  * IRET
+  * IRET (POPA, POPF, RET)
   * ADD
   * SUB
   * DIV
   * MUL
   * PUSH
   * POP
-  * PUSHA (incluing flags)
-  * POPA (including flags)
+  * PUSHA (PUSH R8-RF)
+  * POPA (POP RF-R8)
+  * PUSHF
+  * POPF
   * SET (set flag)
   * CLR (clear flag)
-  * TGL (toggle flag)
   * NOP
   * HLT
   * AND
@@ -77,7 +78,7 @@ The entire virtual machine will be implemented in sofware.
   * XOR
   * NOT
   * TEST (logical AND)
-  * CMP (logical sub)
+  * CMP (logical SUB)
   * JF (Jump if Flag)
   * IN
   * OUT
@@ -87,7 +88,7 @@ The entire virtual machine will be implemented in sofware.
   * ROR
   * STOP (hard lock cpu)
   * INT
-  * BREAK/DEBUG (int 3)
+  * BREAK (INT 3)
   * INC
   * DEC
-  * XCHG/SWAP
+  * XCHG
