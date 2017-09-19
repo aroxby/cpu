@@ -81,45 +81,57 @@ The entire virtual machine will be implemented in sofware.
   * 7 - Reserved
 
 * 0 operand instructions (8-bits)
-  * RET
-  * IRET (POPA, POPF, RET)
-  * PUSHA (PUSH R8-RF)
-  * POPA (POP RF-R8)
-  * PUSHF
-  * POPF
-  * NOP
-  * HLT
-  * STOP (hard lock cpu)
-  * BREAK (INT 3)
+  * Debugging Options
+    * BREAK (INT 3)
+    * NOP
+  * Hardware Operations
+    * HLT
+    * RST (Restore Reset Vector)
+    * STOP (hard lock cpu)
+  * Program Operations
+    * IRET (POPA, POPF, RET)
+    * RET
+  * Stack Operations
+    * POPA (POP RF, POP R7-R0)
+    * PUSHA (PUSH R0-R7, PUSH FR)
 
 * 1 operand instructions (16-bits)
-  * JMP
-  * CALL
-  * PUSH
-  * POP
-  * SET (set flag)
-  * CLR (clear flag)
-  * NOT
-  * TEST (logical AND)
-  * CMP (logical SUB)
-  * INT
-  * INC
-  * DEC
+  * Arithmetic Operations
+    * DEC
+    * INC
+  * Bitwise Operations
+    * NOT
+  * Program Operations
+    * CALL
+    * CLR (clear flag)
+    * INT
+    * JMP
+    * SET (set flag)
+  * Stack Operations
+    * POP
+    * PUSH
 
 * 2 operand instructions (24-bits)
-  * MOV
-  * ADD
-  * SUB
-  * DIV
-  * MUL
-  * AND
-  * OR
-  * XOR
-  * JF (Jump if Flag)
-  * IN
-  * OUT
-  * SHL
-  * SHR
-  * ROL
-  * ROR
-  * XCHG
+  * Arithmetic Operations
+    * ADD
+    * DIV
+    * MUL
+    * SUB
+  * Bitwise Operations
+    * AND
+    * OR
+    * ROL
+    * ROR
+    * SHL
+    * SHR
+    * XOR
+  * Hardware Operations
+    * IN
+    * OUT
+  * Mulipurpose Operations
+    * MOV
+    * XCHG
+  * Program Operations
+    * CMP (logical SUB)
+    * JF (Jump if Flag)
+    * TEST (logical AND)
