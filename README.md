@@ -135,3 +135,59 @@ The entire virtual machine will be implemented in sofware.
     * CMP (logical SUB)
     * JF (Jump if Flag)
     * TEST (logical AND)
+
+* Opcode notation
+  * The form of notation should be
+    * Instruction ([I][M][R],[I][M][R],...) - Opcode [operand-code [...]]
+  * Where I, M, and R denote that the positional operand
+  may be an immediate value, memory address, or register index
+  * Where operand-code (from the table below) explains to the CPU
+  how to interpret the operands
+
+* Operand Codes (xx)
+  * 00 - Register
+  * 01 - Memory
+  * 02 - Immediate
+
+* Opcodes
+  * BREAK CC
+  * NOP 00/FF
+  * HLT FC
+  * RST FD
+  * STOP FE
+  * IRET 01
+  * RET 02
+  * POPA 05
+  * PUSHA 06
+
+  * DEC (MR) 0Axx
+  * INC (MR) 0Bxx
+  * NOT (MR) 0Exx
+  * CALL (IMR) 10xx
+  * CLR (I) 12xx
+  * INT (IMR) 14xx
+  * JMP(Near)(IMR) 20xx
+  * JMP(Far)(IMR)  21xx
+  * SET (I) 24xx
+  * POP (MR) 28xx
+  * PUSH (IMR) 29xx
+
+  * ADD (IM,IR,MM,MR,RM,RR) 2Bxx xx
+  * DIV (IM,IR,MM,MR,RM,RR) 2Exx xx
+  * MOD (IM,IR,MM,MR,RM,RR) 2Fxx xx
+  * MUL (IM,IR,MM,MR,RM,RR) 2Dxx xx
+  * SUB (IM,IR,MM,MR,RM,RR) 2Cxx xx
+  * AND (IM,IR,MM,MR,RM,RR) 30xx xx
+  * OR (IM,IR,MM,MR,RM,RR) 31xx xx
+  * ROL (IM,IR,MM,MR,RM,RR) 35xx xx
+  * ROR (IM,IR,MM,MR,RM,RR) 36xx xx
+  * SHL (IM,IR,MM,MR,RM,RR) 33xx xx
+  * SHR (IM,IR,MM,MR,RM,RR) 34xx xx
+  * XOR (IM,IR,MM,MR,RM,RR) 32xx xx
+  * IN (IM,IR,MM,MR,RM,RR) 3Axx xx
+  * OUT ([IMR][IMR]) 3Bxx xx
+  * MOV (IM,IR,MM,MR,RM,RR) 3Exx xx
+  * XCHG (IM,IR,MM,MR,RM,RR) 3Fxx xx
+  * CMP ([IMR][IMR]) 40xx xx
+  * JF (I,IMR) 44xx xx
+  * TEST ([IMR][IMR]) 41xx xx
