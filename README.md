@@ -36,17 +36,17 @@ The entire virtual machine will be implemented in sofware.
   * LSB
 
 * Special Purpose Regisers:
-  * IP (R0)
-  * BP (R1)
-  * SP (R2)
-  * FLAGS (R3)
-  * Vector Table (R4)
-  * Reserved (R5)
-  * Reserved (R6)
-  * Reserved (R7)
+  * IP (S0)
+  * BP (S1)
+  * SP (S2)
+  * FLAGS (S3)
+  * Vector Table (S4)
+  * Reserved (S5)
+  * Reserved (S6)
+  * Reserved (S7)
 
 * General Purpose Registers:
-  * R8-RF
+  * R0-R8
 
 * CPU Interrupts:
   * 0 - Double Fault
