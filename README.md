@@ -58,32 +58,41 @@ The entire virtual machine will be implemented in sofware.
   * 6 - Reserved
   * 7 - Reserved
 
-* List of instructions (from a high level):
-  * MOV
-  * JMP
-  * CALL
+* 0 operand instructions (8-bits)
   * RET
   * IRET (POPA, POPF, RET)
-  * ADD
-  * SUB
-  * DIV
-  * MUL
-  * PUSH
-  * POP
   * PUSHA (PUSH R8-RF)
   * POPA (POP RF-R8)
   * PUSHF
   * POPF
-  * SET (set flag)
-  * CLR (clear flag)
   * NOP
   * HLT
-  * AND
-  * OR
-  * XOR
+  * STOP (hard lock cpu)
+  * BREAK (INT 3)
+
+* 1 operand instructions (16-bits)
+  * JMP
+  * CALL
+  * PUSH
+  * POP
+  * SET (set flag)
+  * CLR (clear flag)
   * NOT
   * TEST (logical AND)
   * CMP (logical SUB)
+  * INT
+  * INC
+  * DEC
+
+* 2 operand instructions (24-bits)
+  * MOV
+  * ADD
+  * SUB
+  * DIV
+  * MUL
+  * AND
+  * OR
+  * XOR
   * JF (Jump if Flag)
   * IN
   * OUT
@@ -91,9 +100,4 @@ The entire virtual machine will be implemented in sofware.
   * SHR
   * ROL
   * ROR
-  * STOP (hard lock cpu)
-  * INT
-  * BREAK (INT 3)
-  * INC
-  * DEC
   * XCHG
