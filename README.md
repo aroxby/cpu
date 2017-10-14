@@ -5,10 +5,10 @@ The entire virtual machine will be implemented in software.
 #### Extra Features
 
 ##### Multicore/Coprocessors:
-*Allow multiple CPUs to be added to the same VM (multicore)
+* Allow multiple CPUs to be added to the same VM (multicore)
   * Could allow for a FORK instruction
 
-*Allow (smaller, supplemental) CPUs to added to bigger (main) CPUs (coprocessors)
+* Allow (smaller, supplemental) CPUs to added to bigger (main) CPUs (coprocessors)
   * Think, creating a small CPU which only does IN/OUT and
   adding that to an otherwise complete CPU
 
