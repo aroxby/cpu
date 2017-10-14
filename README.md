@@ -43,10 +43,10 @@ The entire virtual machine will be implemented in software.
 * Bit ordering
   * LSB
 
-* Reserved Regisers:
+* Reserved Registers:
   * Instruction Pointer (IP)
 
-* Special Regisers:
+* Special Registers:
   * Reserved (R8)
   * Reserved (R9)
   * Reserved (R10)
