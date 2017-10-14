@@ -1,6 +1,6 @@
 # Virtual CPU
 This my attempt at building a virtual CPU.  This is just for fun and learning.
-The entire virtual machine will be implemented in sofware.
+The entire virtual machine will be implemented in software.
 
 #### Extra Features
 
