@@ -29,4 +29,8 @@
 
 # End of https://www.gitignore.io/api/c++,cmake
 
+# Windows shortcut to git shell
 Git Shell.lnk
+
+# External dependencies
+/external/
