@@ -5,9 +5,13 @@ typedef unsigned long long PortType;
 
 // I/O backend interface
 class PortSocket {
+// All methods return 0 on success and non-zero on error
 public:
-    virtual int read(void *buffer, SizeType len, void *user_data) = 0;
-    virtual int write(const void *buffer, SizeType len, void *user_data) = 0;
+    //Called when data should read into buffer
+    virtual int read(void *buffer, SizeType len, PortType port) = 0;
+
+    //Called when data should be written from buffer
+    virtual int write(const void *buffer, SizeType len, PortType port) = 0;
 };
 
 #endif//_INC_PORTSOCKET_H

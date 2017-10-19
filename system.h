@@ -6,16 +6,30 @@
 
 // This class serves as a unified bus for memory and I/O ports
 class System {
+// All methods return 0 on success and non-zero on error
 public:
-    int installMemory(MemoryModule *mod, const void *user_data, SizeType size);
-    int removeMemory(MemoryModule *mod, const void *user_data);
+    // Installs mod to support the memory at offset for size
+    int installMemory(MemoryModule *mod, SizeType offset, SizeType size);
 
-    int bindPort(PortSocket *sock, PortType port, const void *user_data);
-    int releasePort(PortSocket *sock, PortType port, const void *user_data);
+    // Removes the MemoryModule that supports the offset
+    int removeMemory(SizeType offset);
 
-    int readMemory(SizeType addr, SizeType len, void *data);
-    int writeMemory(SizeType addr, SizeType len, const void *data);
+    //Installs sock as the read/write interface on port
+    int bindPort(PortSocket *sock, PortType port);
+
+    // Removes the PortSocket on port
+    int releasePort(PortType port);
+
+    // Read the memory from the specified range (must be continuous) into data
+    int readMemory(SizeType offset, SizeType len, void *data);
+
+    // Write data into the specified memory range (must be continuous)
+    int writeMemory(SizeType offset, SizeType len, const void *data);
+
+    // Read data from port
     int readPort(PortType port, SizeType len, void *data);
+
+    // Write data to port
     int writePort(PortType port, SizeType len, const void *data);
 };
 
