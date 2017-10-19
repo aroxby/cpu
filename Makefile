@@ -1,25 +1,34 @@
 EXT_DIR=external
+
+GTEST_REPO=https://github.com/google/googletest.git
+GTEST_TAG=release-1.8.0
 GTEST_DIR=$(EXT_DIR)/googletest
 DEPENDS=$(GTEST_DIR)
 
-GTEST_INC=-I$(GTEST_DIR)/googletest/include
-EXT_INC=$(GTEST_INC)
-INC=-I. $(EXT_INC)
+GTEST_INC=$(GTEST_DIR)/googletest/include
 
-CPP=g++
-CPPFLAGS=$(INC)
+EXT_INC=$(GTEST_INC)
+
+SRC_INC=src
 
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 TEST_OUT=$(TEST_DIR)/tests.exe
 
-.PHONY: default depend test test-clean clean dist-clean
+INC=$(SRC_INC) $(EXT_INC)
+
+CPP=g++
+CPPFLAGS=$(foreach d, $(INC), -I$d) #Source: https://stackoverflow.com/a/4134861
+
+GIT=git
+
+.PHONY: default depend test test-tidy test-clean clean dist-clean maintainer-clean
 
 default: all
 
 $(GTEST_DIR):
-	git clone https://github.com/google/googletest.git $@
+	$(GIT) clone $(GTEST_REPO) -b $(GTEST_TAG) $@
 
 depend: $(DEPENDS)
 
@@ -27,13 +36,16 @@ depend: $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(TEST_OUT): $(TEST_OBJS)
-	$(CPP) -o $(TEST_OUT) $<
+	$(CPP) $< -o $@
 
 test: $(TEST_OUT)
 	$<
 
-test-clean:
+test-tidy:
 	rm -f $(TEST_OBJS)
+
+test-clean: test-tidy
+	$(TEST_OUT)
 
 clean: test-clean
 
