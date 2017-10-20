@@ -45,7 +45,7 @@ test-tidy:
 	rm -f $(TEST_OBJS)
 
 test-clean: test-tidy
-	$(TEST_OUT)
+	rm -f $(TEST_OUT)
 
 clean: test-clean
 
