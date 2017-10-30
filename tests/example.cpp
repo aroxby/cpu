@@ -6,13 +6,12 @@ protected:
     System sys;
 };
 
-// Tests the default c'tor.
+//Dumy test
 TEST_F(SystemTest, ExampleTest) {
     EXPECT_EQ(0, 0);
 }
 
-GTEST_API_ int main(int argc, char **argv) {
-  printf("Running main() from gtest_main.cc\n");
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+int main(int argc, char **argv) {
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
