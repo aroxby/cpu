@@ -1,42 +1,52 @@
 EXT_DIR=external
 
 GTEST_REPO=https://github.com/google/googletest.git
-GTEST_TAG=release-1.8.0
-GTEST_DIR=$(EXT_DIR)/googletest
-DEPENDS=$(GTEST_DIR)
+# Ideally, this would be a release tag but mingw compilation requires unreleased features
+GTEST_TAG=master
+GTEST_BASE_DIR=$(EXT_DIR)/googletest
+GTEST_DIR=$(GTEST_BASE_DIR)/googletest
+GTEST_INC=$(GTEST_DIR)/include
+GTEST_CPPFLAGS=-isystem $(GTEST_INC) -I$(GTEST_DIR)
+GTEST_OBJS=$(GTEST_DIR)/src/gtest-all.o
+GTEST_OUT=$(GTEST_DIR)/libgtest.a
 
-GTEST_INC=$(GTEST_DIR)/googletest/include
+DEPENDS=$(GTEST_OUT)
 
 EXT_INC=$(GTEST_INC)
-
 SRC_INC=src
+INC=$(SRC_INC) $(EXT_INC)
+CPPFLAGS=$(foreach d, $(INC), -I$d) # Source: https://stackoverflow.com/a/4134861
+
+AR=ar
+GIT=git
+CPP=g++
 
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 TEST_OUT=$(TEST_DIR)/tests.exe
-
-INC=$(SRC_INC) $(EXT_INC)
-
-CPP=g++
-CPPFLAGS=$(foreach d, $(INC), -I$d) #Source: https://stackoverflow.com/a/4134861
-
-GIT=git
+TEST_LD_FLAGS=$(DEPENDS)
 
 .PHONY: default depend test test-tidy test-clean clean dist-clean maintainer-clean
 
 default: all
 
-$(GTEST_DIR):
+$(GTEST_BASE_DIR):
 	$(GIT) clone $(GTEST_REPO) -b $(GTEST_TAG) $@
+
+$(GTEST_OBJS): %.o: %.cc
+	$(CPP) $(GTEST_CPPFLAGS) -c $< -o $@
+
+$(GTEST_OUT): $(GTEST_OBJS)
+	$(AR) -rv $@ $?
 
 depend: $(DEPENDS)
 
-%.o: %.cpp $(DEPENDS)
+%.o: %.cpp
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
-$(TEST_OUT): $(TEST_OBJS)
-	$(CPP) $< -o $@
+$(TEST_OUT): $(TEST_OBJS) $(DEPENDS)
+	$(CPP) $< -o $@ -L $(GTEST_DIR) -lgtest
 
 test: $(TEST_OUT)
 	$<
