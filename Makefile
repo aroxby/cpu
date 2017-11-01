@@ -50,7 +50,7 @@ depend: $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(TEST_OUT): $(TEST_OBJS)
-	$(CPP) $< -o $@ $(TEST_CPPFLAGS)
+	$(CPP) $? -o $@ $(TEST_CPPFLAGS)
 
 test: $(TEST_OUT)
 	$<
