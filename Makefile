@@ -26,16 +26,20 @@ SRC_INC=src
 INC=$(SRC_INC) $(EXT_INC)
 CPPFLAGS=$(foreach d, $(INC), -I$d) # Source: https://stackoverflow.com/a/4134861
 
-AR=ar
-GIT=git
-CPP=g++
-
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 TEST_OUT=$(TEST_DIR)/tests.exe
 TEST_CPPFLAGS=$(CPPFLAGS) -L $(GTEST_DIR) -lgtest
 TEST_LD_FLAGS=$(DEPENDS)
+
+SRC_DIR=src
+SRCS=$(shell find $(SRC_DIR) -name *.cpp)
+OBJS=$(subst .cpp,.o,$(SRCS))
+
+AR=ar
+GIT=git
+CPP=g++
 
 .PHONY: default depend test test-tidy test-clean clean dist-clean maintainer-clean
 
@@ -62,7 +66,7 @@ depend: $(DEPENDS)
 %.o: %.cpp $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
-$(TEST_OUT): $(TEST_OBJS)
+$(TEST_OUT): $(TEST_OBJS) $(OBJS)
 	$(CPP) $? -o $@ $(TEST_CPPFLAGS)
 
 test: $(TEST_OUT)
