@@ -12,6 +12,9 @@ public:
 
     // Called when data should be written from buffer
     virtual int write(const void *buffer, SizeType len, PortType port) = 0;
+
+    // Allow for proper polymorphic destruction
+    virtual ~MemoryModule() { }
 };
 
 #endif//_INC_PORTSOCKET_H

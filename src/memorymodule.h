@@ -12,6 +12,9 @@ public:
 
     // Write buffer into memory at (moudle) offset
     virtual int writeMemory(SizeType offset, const void *buffer, SizeType len) = 0;
+
+    // Allow for proper polymorphic destruction
+    virtual ~MemoryModule() { }
 };
 
 #endif//_INC_MEMORYMODULE_H
