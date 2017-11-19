@@ -22,34 +22,46 @@ public:
     int releasePort(PortType port);
 
     // Read the memory from the specified range (must be continuous) into data
-    int readMemory(SizeType offset, SizeType len, void *data);
+    int readMemory(SizeType offset, SizeType len, void *data) const;
 
     // Write data into the specified memory range (must be continuous)
-    int writeMemory(SizeType offset, SizeType len, const void *data);
+    int writeMemory(SizeType offset, SizeType len, const void *data) const;
 
     // Read data from port
-    int readPort(PortType port, SizeType len, void *data);
+    int readPort(PortType port, SizeType len, void *data) const;
 
     // Write data to port
-    int writePort(PortType port, SizeType len, const void *data);
+    int writePort(PortType port, SizeType len, const void *data) const;
 
 private:
     class MemoryInstance {
     public:
         SizeType offset;
         SizeType length;
-        MemoryModule &mod;
+        MemoryModule *mod;
 
-        MemoryInstance(MemoryModule &mod, SizeType offset, SizeType length) :
-            mod(mod), offset(offset), length(length) {
-        }
+        MemoryInstance() : mod(NULL), offset(0), length(0) { }
+
+        MemoryInstance(MemoryModule *mod, SizeType offset, SizeType length) :
+            mod(mod), offset(offset), length(length) { }
+
+        operator bool() const { return length > 0; }
     };
 
     typedef std::map<SizeType, const MemoryInstance> MemMap;
-    typedef std::map<PortType, PortSocket*> PortMap;
+    typedef std::map<PortType, const PortSocket *> PortMap;
 
     MemMap mem;
     PortMap ports;
+
+    // Find installed moudle with base address <= address (or NULL)
+    MemoryInstance resolveAtMost(SizeType address) const;
+
+    // Find installed moudle with base address >= address (or NULL)
+    MemoryInstance resolveAtLeast(SizeType address) const;
+
+    // Get the module to lowest address after inst (or NULL)
+    MemoryInstance next(const MemoryInstance inst) const;
 };
 
 #endif//_INC_SYSTEM_H

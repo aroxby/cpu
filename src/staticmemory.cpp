@@ -1,6 +1,6 @@
 #include "staticmemory.h"
 
-StaticMemory::StaticModule(SizeType size) {
+StaticMemory::StaticMemory(SizeType size) {
     throw "Not Implemented";
 }
 

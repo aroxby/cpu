@@ -1,7 +1,7 @@
 #ifndef _INC_MEMORYMODULE_H
 #define _INC_MEMORYMODULE_H
 
-typedef unsigned long long SizeType;
+#include "baseTypes.h"
 
 // Memory backend interface
 class MemoryModule {

@@ -1,6 +1,8 @@
 #ifndef _INC_PORTSOCKET_H
 #define _INC_PORTSOCKET_H
 
+#include "baseTypes.h"
+
 typedef unsigned long long PortType;
 
 // I/O backend interface
