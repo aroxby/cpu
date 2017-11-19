@@ -78,8 +78,10 @@ test-tidy:
 test-clean: test-tidy
 	rm -f $(TEST_OUT)
 
-clean: test-clean
+tidy: test-tidy
 	rm -f $(OBJS)
+
+clean: tidy test-clean
 
 dist-clean: clean
 	rm -rf $(EXT_DIR)
