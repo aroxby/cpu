@@ -79,6 +79,7 @@ test-clean: test-tidy
 	rm -f $(TEST_OUT)
 
 clean: test-clean
+	rm -f $(OBJS)
 
 dist-clean: clean
 	rm -rf $(EXT_DIR)
