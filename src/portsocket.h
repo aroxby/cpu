@@ -14,7 +14,7 @@ public:
     virtual int write(const void *buffer, SizeType len, PortType port) = 0;
 
     // Allow for proper polymorphic destruction
-    virtual ~MemoryModule() { }
+    virtual ~PortSocket() { }
 };
 
 #endif//_INC_PORTSOCKET_H
