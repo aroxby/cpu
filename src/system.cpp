@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include "system.h"
 #include "errors.h"
@@ -6,7 +7,8 @@
 int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
     int status = ERR_SUCCESS;
 
-    if(size <= 0) {
+    // NB: if(size <= 0 || /* overflow */offset + size < offset) {
+    if(offset + size <= offset) {
         status = ERR_BADRANGE;
     } else {
         MemoryInstance overlap = resolveAtMost(offset + size - 1);
@@ -85,7 +87,7 @@ int System::memoryLoop(SizeType offset, SizeType len, const void *data, bool wri
             status = ERR_BADRANGE;
         } else {
             SizeType srcOff = offset - src.offset;
-            SizeType srcLen = src.length - srcOff;
+            SizeType srcLen = std::min(src.length - srcOff, len);
             if(write) {
                 status = src.mod->writeMemory(srcOff, srcLen, data);
             } else {
