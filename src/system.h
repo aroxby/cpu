@@ -57,9 +57,6 @@ private:
     // Find installed moudle with base address <= address (or NULL)
     MemoryInstance resolveAtMost(SizeType address) const;
 
-    // Find installed moudle with base address >= address (or NULL)
-    MemoryInstance resolveAtLeast(SizeType address) const;
-
     // Get the module to lowest address after inst (or NULL)
     MemoryInstance next(const MemoryInstance inst) const;
 };
