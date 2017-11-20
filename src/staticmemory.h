@@ -6,8 +6,8 @@
 class StaticMemory : public MemoryModule {
 public:
     StaticMemory(SizeType size);
-    virtual int readMemory(SizeType offset, void *buffer, SizeType len);
-    virtual int writeMemory(SizeType offset, const void *buffer, SizeType len);
+    virtual int readMemory(SizeType offset, SizeType len, void *buffer);
+    virtual int writeMemory(SizeType offset, SizeType len, const void *buffer);
 
 private:
     void *buffer;

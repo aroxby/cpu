@@ -6,8 +6,8 @@
 
 class MockMemoryModule : public MemoryModule {
 public:
-    MOCK_METHOD3(readMemory, int(SizeType offset, void *buffer, SizeType len));
-    MOCK_METHOD3(writeMemory, int(SizeType offset, const void *buffer, SizeType len));
+    MOCK_METHOD3(readMemory, int(SizeType offset, SizeType len, void *buffer));
+    MOCK_METHOD3(writeMemory, int(SizeType offset, SizeType len, const void *buffer));
 };
 
 typedef ::testing::StrictMock<MockMemoryModule> StrictMockMemoryModule;
