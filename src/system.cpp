@@ -58,15 +58,19 @@ int System::writePort(PortType port, SizeType len, const void *data) const {
 }
 
 System::MemoryInstance System::resolveAtMost(SizeType address) const {
+    MemoryInstance ret = MemoryInstance::null;
     auto iterator = mem.lower_bound(address);
-    if(iterator->second.offset != address) {
-        if (iterator == mem.cbegin()) {
-            iterator = mem.cend();
-        } else if(iterator != mem.cend()) {
-            iterator--;
+    if(iterator != mem.cend()) {
+        if(iterator->second.offset == address) {
+            ret = iterator->second;
+        } else {
+            if(iterator != mem.cbegin() && iterator != mem.cend()) {
+                iterator--;
+                ret = iterator->second;
+            }
         }
     }
-    return iterator->second;
+    return ret;
 }
 
 int System::memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const {
