@@ -40,8 +40,6 @@ private:
         SizeType length;
         MemoryModule *mod;
 
-        MemoryInstance() : mod(NULL), offset(0), length(0) { }
-
         MemoryInstance(MemoryModule *mod, SizeType offset, SizeType length) :
             mod(mod), offset(offset), length(length) { }
 
