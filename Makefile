@@ -59,7 +59,7 @@ $(GMOCK_OBJS): %.o: %.cc
 	$(CPP) $(GTEST_CPPFLAGS) -c $< -o $@
 
 $(GTEST_OUT): $(GTEST_OBJS) $(GMOCK_OBJS)
-	$(AR) -rv $@ $?
+	$(AR) -rv $@ $(GTEST_OBJS) $(GMOCK_OBJS)
 
 depend: $(DEPENDS)
 
@@ -67,7 +67,7 @@ depend: $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(TEST_OUT): $(TEST_OBJS) $(OBJS)
-	$(CPP) $? -o $@ $(TEST_CPPFLAGS)
+	$(CPP) $(TEST_OBJS) $(OBJS) -o $@ $(TEST_CPPFLAGS)
 
 test: $(TEST_OUT)
 	$<
