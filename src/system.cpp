@@ -1,6 +1,7 @@
 #include <cassert>
-#include "errors.h"
 #include "system.h"
+#include "errors.h"
+#include "utils.h"
 
 int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
     int status = ERR_SUCCESS;
@@ -39,11 +40,11 @@ int System::releasePort(PortType port) {
 }
 
 int System::readMemory(SizeType offset, SizeType len, void *data) const {
-    throw "Not Implemented";
+    return memoryLoop(offset, len, data, false);
 }
 
 int System::writeMemory(SizeType offset, SizeType len, const void *data) const {
-    throw "Not Implemented";
+    return memoryLoop(offset, len, data, true);
 }
 
 int System::readPort(PortType port, SizeType len, void *data) const {
@@ -67,12 +68,6 @@ System::MemoryInstance System::resolveAtMost(SizeType address) const {
     return iterator->second;
 }
 
-// Find installed module with base address >= address
-System::MemoryInstance System::resolveAtLeast(SizeType address) const {
-    auto iterator = mem.lower_bound(address);
-    return iterator->second;
-}
-
 // Get the module to lowest address after inst
 System::MemoryInstance System::next(const MemoryInstance inst) const {
     auto iterator = mem.find(inst.offset);
@@ -80,4 +75,31 @@ System::MemoryInstance System::next(const MemoryInstance inst) const {
         iterator++;
     }
     return iterator->second;
+}
+
+int System::memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const {
+    int status = ERR_SUCCESS;
+    while(len > 0) {
+        MemoryInstance src = resolveAtMost(offset);
+        if(!src) {
+            status = ERR_BADRANGE;
+        } else {
+            SizeType srcOff = offset - src.offset;
+            SizeType srcLen = src.length - srcOff;
+            if(write) {
+                status = src.mod->writeMemory(srcOff, srcLen, data);
+            } else {
+                status = src.mod->readMemory(srcOff, srcLen, /* HACK */(void*)(data));
+            }
+            if(status == ERR_SUCCESS)
+            {
+                len -= srcLen;
+                offset += srcLen;
+                data = advancePtr(data, srcLen);
+            } else {
+                break;
+            }
+        }
+    }
+    return status;
 }

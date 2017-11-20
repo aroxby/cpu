@@ -59,6 +59,9 @@ private:
 
     // Get the MemoryInstance to lowest address after inst
     MemoryInstance next(const MemoryInstance inst) const;
+
+    // Interal algorithm used to resolve read/write addressing
+    int memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const;
 };
 
 #endif//_INC_SYSTEM_H
