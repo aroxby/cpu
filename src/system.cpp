@@ -57,7 +57,6 @@ int System::writePort(PortType port, SizeType len, const void *data) const {
     throw "Not Implemented";
 }
 
-// Find installed module with base address <= address
 System::MemoryInstance System::resolveAtMost(SizeType address) const {
     auto iterator = mem.lower_bound(address);
     if(iterator->second.offset != address) {
