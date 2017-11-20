@@ -54,10 +54,10 @@ private:
     MemMap mem;
     PortMap ports;
 
-    // Find installed moudle with base address <= address (or NULL)
+    // Find installed MemoryInstance with base address <= address
     MemoryInstance resolveAtMost(SizeType address) const;
 
-    // Get the module to lowest address after inst (or NULL)
+    // Get the MemoryInstance to lowest address after inst
     MemoryInstance next(const MemoryInstance inst) const;
 };
 
