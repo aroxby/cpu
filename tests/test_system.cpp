@@ -11,8 +11,11 @@ protected:
 
 //Dumy test
 TEST_F(SystemTest, TestMemoryAddressTranslation) {
-    unsigned char dummy_buffer[10];
     int iret;
+    unsigned char dummy_buffer[10];
+
+    EXPECT_CALL(mem, readMemory(0, 5, dummy_buffer))
+        .WillOnce(testing::Return(ERR_SUCCESS));
 
     iret = sys.installMemory(mem, 10, 10);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Module installion failed";
