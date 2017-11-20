@@ -57,9 +57,6 @@ private:
     // Find installed MemoryInstance with base address <= address
     MemoryInstance resolveAtMost(SizeType address) const;
 
-    // Get the MemoryInstance to lowest address after inst
-    MemoryInstance next(const MemoryInstance inst) const;
-
     // Interal algorithm used to resolve read/write addressing
     int memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const;
 };

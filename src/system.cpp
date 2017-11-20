@@ -70,15 +70,6 @@ System::MemoryInstance System::resolveAtMost(SizeType address) const {
     return iterator->second;
 }
 
-// Get the module to lowest address after inst
-System::MemoryInstance System::next(const MemoryInstance inst) const {
-    auto iterator = mem.find(inst.offset);
-    if(iterator != mem.cend()) {
-        iterator++;
-    }
-    return iterator->second;
-}
-
 int System::memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const {
     int status = ERR_SUCCESS;
     while(len > 0) {
