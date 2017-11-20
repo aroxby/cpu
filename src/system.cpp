@@ -4,6 +4,8 @@
 #include "errors.h"
 #include "utils.h"
 
+const System::MemoryInstance System::MemoryInstance::null(NULL, 0, 0);
+
 int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
     int status = ERR_SUCCESS;
 

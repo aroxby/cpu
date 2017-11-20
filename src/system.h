@@ -44,6 +44,8 @@ private:
             mod(mod), offset(offset), length(length) { }
 
         operator bool() const { return length > 0; }
+
+        const static MemoryInstance null;
     };
 
     typedef std::map<SizeType, const MemoryInstance> MemMap;
