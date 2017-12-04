@@ -3,6 +3,9 @@
 #include <system.h>
 #include "mock_memorymodule.h"
 
+//#include <iostream>
+//using namespace std;
+
 class SystemTest : public testing::Test {
 protected:
     System sys;
