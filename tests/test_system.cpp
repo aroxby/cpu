@@ -79,3 +79,20 @@ TEST_F(SystemTest, TestSpannedMemoryAddressTranslation) {
     iret = sys.readMemory(5, 10, dummy_buffer);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Memory read failed";
 }
+
+TEST_F(SystemTest, TestNonContinuousMemoryAddressTranslation) {
+    int iret;
+    unsigned char dummy_buffer[10];
+
+    EXPECT_CALL(mem, readMemory(5, 5, dummy_buffer))
+        .WillOnce(testing::Return(ERR_SUCCESS));
+
+    iret = sys.installMemory(mem, 0, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Module 1 installion failed";
+
+    iret = sys.installMemory(mem, 15, 5);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Module 2 installion failed";
+
+    iret = sys.readMemory(5, 10, dummy_buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Bad memory read succeeded";
+}
