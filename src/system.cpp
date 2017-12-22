@@ -73,6 +73,9 @@ System::MemoryInstance System::resolveAtMost(SizeType address) const {
             ret = iterator->second;
         }
     }
+    if(ret.offset > address) {
+        ret = MemoryInstance::null;
+    }
     return ret;
 }
 
@@ -84,20 +87,24 @@ int System::memoryLoop(SizeType offset, SizeType len, const void *data, bool wri
             status = ERR_BADRANGE;
         } else {
             SizeType srcOff = offset - src.offset;
-            SizeType srcLen = std::min(src.length - srcOff, len);
-            if(write) {
-                status = src.mod->writeMemory(srcOff, srcLen, data);
-            } else {
-                status = src.mod->readMemory(srcOff, srcLen, /* HACK */(void*)(data));
+            //No memory module covers the requested range
+            if (srcOff >= src.length) {
+                status = ERR_BADRANGE;
             }
-            if(status == ERR_SUCCESS)
-            {
+            else {
+                SizeType srcLen = std::min(src.length - srcOff, len);
+                if(write) {
+                    status = src.mod->writeMemory(srcOff, srcLen, data);
+                } else {
+                    status = src.mod->readMemory(srcOff, srcLen, /* HACK */(void*)(data));
+                }
                 len -= srcLen;
                 offset += srcLen;
                 data = advancePtr(data, srcLen);
-            } else {
-                break;
             }
+        }
+        if(status != ERR_SUCCESS) {
+            break;
         }
     }
     return status;
