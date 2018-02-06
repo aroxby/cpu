@@ -8,9 +8,11 @@ public:
     StaticMemory(SizeType size);
     virtual int readMemory(SizeType offset, SizeType len, void *buffer);
     virtual int writeMemory(SizeType offset, SizeType len, const void *buffer);
+    virtual ~StaticMemory();
 
 private:
-    void *buffer;
+    unsigned char * const self;
+    const int size;
 };
 
 #endif//_INC_STATICMEMORY_H
