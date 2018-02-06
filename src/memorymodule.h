@@ -1,7 +1,7 @@
 #ifndef _INC_MEMORYMODULE_H
 #define _INC_MEMORYMODULE_H
 
-#include "baseTypes.h"
+#include "basetypes.h"
 
 // Memory backend interface
 class MemoryModule {
