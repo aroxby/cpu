@@ -104,6 +104,7 @@ The entire virtual machine will be implemented in software.
   * Program Operations
     * CALL
     * CLR (clear flag)
+    * CMF (Complement flag)
     * INT
     * JMP
     * SET (set flag)
@@ -165,7 +166,8 @@ The entire virtual machine will be implemented in software.
   * NOT (MR) 0Exx
   * CALL (IMR) 10xx
   * CLR (I) 12xx
-  * INT (IMR) 14xx
+  * CMF (I) 14xx
+  * INT (IMR) 16xx
   * JMP(Near)(IMR) 20xx
   * JMP(Far)(IMR)  21xx
   * SET (I) 24xx
