@@ -92,7 +92,7 @@ The entire virtual machine will be implemented in software.
     * IRET (POPA, POPF, RET)
     * RET
   * Stack Operations
-    * POPA (POP RF, POP R7-R0)
+    * POPA (POP FR, POP R7-R0)
     * PUSHA (PUSH R0-R7, PUSH FR)
 
 * 1 operand instructions (16-bits)
@@ -128,7 +128,7 @@ The entire virtual machine will be implemented in software.
   * Hardware Operations
     * IN
     * OUT
-  * Mulipurpose Operations
+  * Multipurpose Operations
     * MOV
     * XCHG
   * Program Operations
