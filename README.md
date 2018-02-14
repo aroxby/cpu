@@ -137,6 +137,10 @@ The entire virtual machine will be implemented in software.
     * JF (Jump if Flag)
     * TEST (logical AND)
 
+* *Missing Operations*
+  * CMPXCHG (CoMPare and eXCHange)
+    * Left out for simplicity, this would be the only 3 operand instruction
+
 * Opcode notation
   * The form of notation should be
     * Instruction ([I][M][R],[I][M][R],...) - Opcode [operand-code [...]]
