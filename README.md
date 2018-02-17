@@ -178,22 +178,22 @@ The entire virtual machine will be implemented in software.
   * POP (MR) 28xx
   * PUSH (IMR) 29xx
 
-  * ADD (IM,IR,MM,MR,RM,RR) 2Bxx xx
-  * DIV (IM,IR,MM,MR,RM,RR) 2Exx xx
-  * MOD (IM,IR,MM,MR,RM,RR) 2Fxx xx
-  * MUL (IM,IR,MM,MR,RM,RR) 2Dxx xx
-  * SUB (IM,IR,MM,MR,RM,RR) 2Cxx xx
-  * AND (IM,IR,MM,MR,RM,RR) 30xx xx
-  * OR (IM,IR,MM,MR,RM,RR) 31xx xx
-  * ROL (IM,IR,MM,MR,RM,RR) 35xx xx
-  * ROR (IM,IR,MM,MR,RM,RR) 36xx xx
-  * SHL (IM,IR,MM,MR,RM,RR) 33xx xx
-  * SHR (IM,IR,MM,MR,RM,RR) 34xx xx
-  * XOR (IM,IR,MM,MR,RM,RR) 32xx xx
-  * IN (IM,IR,MM,MR,RM,RR) 3Axx xx
-  * OUT ([IMR][IMR]) 3Bxx xx
-  * MOV (IM,IR,MM,MR,RM,RR) 3Exx xx
-  * XCHG (IM,IR,MM,MR,RM,RR) 3Fxx xx
-  * CMP ([IMR][IMR]) 40xx xx
-  * JF (I,IMR) 44xx xx
-  * TEST ([IMR][IMR]) 41xx xx
+  * ADD (IMR, MR) 2Bxx xx
+  * DIV (IMR, MR) 2Exx xx
+  * MOD (IMR, MR) 2Fxx xx
+  * MUL (IMR, MR) 2Dxx xx
+  * SUB (IMR, MR) 2Cxx xx
+  * AND (IMR, MR) 30xx xx
+  * OR (IMR, MR) 31xx xx
+  * ROL (IMR, MR) 35xx xx
+  * ROR (IMR, MR) 36xx xx
+  * SHL (IMR, MR) 33xx xx
+  * SHR (IMR, MR) 34xx xx
+  * XOR (IMR, MR) 32xx xx
+  * IN (IMR, MR) 3Axx xx
+  * OUT (IMR, IMR) 3Bxx xx
+  * MOV (IMR, MR) 3Exx xx
+  * XCHG (IMR, MR) 3Fxx xx
+  * CMP (IMR, IMR) 40xx xx
+  * JF (I, IMR) 44xx xx
+  * TEST (IMR, IMR) 41xx xx
