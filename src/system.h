@@ -57,7 +57,7 @@ private:
     // Find installed MemoryInstance with base address <= address
     MemoryInstance resolveAtMost(SizeType address) const;
 
-    // Interal algorithm used to resolve read/write addressing
+    // Internal algorithm used to resolve read/write addressing
     int memoryLoop(SizeType offset, SizeType len, const void *data, bool write) const;
 };
 
