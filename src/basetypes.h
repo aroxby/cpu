@@ -2,5 +2,6 @@
 #define _INC_BASETYPES_H
 
 typedef unsigned long long SizeType;
+typedef unsigned char byte;
 
 #endif//_INC_BASETYPES_H
