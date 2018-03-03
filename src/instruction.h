@@ -3,16 +3,18 @@
 
 #include "basetypes.h"
 #include <vector>
-#include <set>
+#include <map>
+
+typedef std::vector<byte> ByteString;
 
 class CPU;
 
 class Instruction {
 public:
-    typedef void(*Callback)(CPU &cpu, const Instruction &instruction, const std::vector<byte> &params);
-    Instruction(std::vector<byte> opcode, SizeType instructionLength, Callback callback);
-    void execute(CPU &cpu, const std::vector<byte> &params) const;
-    const std::vector<byte> opcode;
+    typedef void(*Callback)(CPU &cpu, const Instruction &instruction, const ByteString &params);
+    Instruction(ByteString opcode, SizeType instructionLength, Callback callback);
+    void execute(CPU &cpu, const ByteString &params) const;
+    const ByteString opcode;
     const SizeType length;
     const Callback callback;
 };
@@ -27,14 +29,16 @@ public:
     };
 
     int add(const Instruction &instruction);
-    int remove(const std::vector<byte> &opcode);
-    int get(const std::vector<byte> &opcode) const;
-    int decode(const std::vector<byte> &opcode, const Instruction **out) const;
+    int remove(const ByteString &opcode);
+    int get(const ByteString &opcode) const;
+    int decode(const ByteString &opcode, const Instruction **out) const;
     SizeType count() const;
 
 private:
-    typedef std::set<Instruction, InstructionComparator> Set;
+    typedef std::pair<ByteString, Instruction> InstructionCode;
+    typedef std::map<ByteString, Instruction> Set;
     typedef Set::iterator Iterator;
+    typedef Set::const_iterator ConstIterator;
     typedef std::pair<Iterator, bool> Insertion;
     Set set;
 };
