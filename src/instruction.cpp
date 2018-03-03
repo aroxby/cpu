@@ -50,6 +50,26 @@ int InstructionSet::add(const Instruction &instruction) {
     return ret;
 }
 
+int InstructionSet::decode(const std::vector<byte> &opcode, const Instruction **out) const {
+    // TODO: Should `set` be an std::map to avoid this?
+    Instruction dummy(opcode, 0, NULL);
+    Iterator pos = set.lower_bound(dummy);
+    Set::size_type matches = 0;
+    int ret = ERR_BADRANGE;
+    while(pos != set.end() && overlap(opcode, pos->opcode)) {
+        matches++;
+        pos++;
+    }
+    if(matches >= 1) {
+        ret = ERR_CONFLICT;
+        if(matches == 1) {
+            ret = ERR_SUCCESS;
+            *out = &*pos;
+        }
+    }
+    return ret;
+}
+
 SizeType InstructionSet::count() const {
     return set.size();
 }

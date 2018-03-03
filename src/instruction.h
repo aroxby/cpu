@@ -29,6 +29,7 @@ public:
     int add(const Instruction &instruction);
     int remove(const std::vector<byte> &opcode);
     int get(const std::vector<byte> &opcode) const;
+    int decode(const std::vector<byte> &opcode, const Instruction **out) const;
     SizeType count() const;
 
 private:
