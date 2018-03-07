@@ -39,6 +39,7 @@ private:
     typedef Set::iterator Iterator;
     typedef Set::const_iterator ConstIterator;
     typedef std::pair<Iterator, bool> Insertion;
+
     Set set;
 };
 
