@@ -30,7 +30,6 @@ public:
 
     int add(const Instruction &instruction);
     int remove(const ByteString &opcode);
-    int get(const ByteString &opcode) const;
     int decode(const ByteString &opcode, const Instruction **out) const;
     SizeType count() const;
 
