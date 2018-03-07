@@ -50,6 +50,14 @@ int InstructionSet::add(const Instruction &instruction) {
     return ret;
 }
 
+int InstructionSet::remove(const ByteString &opcode) {
+    Set::size_type removed = set.remove(opcode);
+    if(removed > 0) {
+        return ERR_SUCCESS;
+    }
+    return ERR_BADRANGE;
+}
+
 int InstructionSet::decode(const ByteString &opcode, const Instruction **out) const {
     ConstIterator pos = set.lower_bound(opcode);
     Set::size_type matches = 0;
