@@ -51,7 +51,7 @@ int InstructionSet::add(const Instruction &instruction) {
 }
 
 int InstructionSet::remove(const ByteString &opcode) {
-    Set::size_type removed = set.remove(opcode);
+    Set::size_type removed = set.erase(opcode);
     if(removed > 0) {
         return ERR_SUCCESS;
     }
