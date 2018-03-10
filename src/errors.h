@@ -4,5 +4,6 @@
 const static int ERR_SUCCESS = 0;
 const static int ERR_BADRANGE = 1;
 const static int ERR_CONFLICT = 2;
+const static int ERR_INCOMPLETE = 3;
 
 #endif//_INC_ERRORS_H

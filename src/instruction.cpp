@@ -69,8 +69,11 @@ int InstructionSet::decode(const ByteString &opcode, const Instruction **out) co
     if(matches >= 1) {
         ret = ERR_CONFLICT;
         if(matches == 1) {
-            ret = ERR_SUCCESS;
-            *out = &pos->second;
+            ret = ERR_INCOMPLETE;
+            if(pos->first == opcode) {
+                ret = ERR_SUCCESS;
+                *out = &pos->second;
+            }
         }
     }
     return ret;
