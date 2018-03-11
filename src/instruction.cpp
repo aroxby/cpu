@@ -31,6 +31,7 @@ int InstructionSet::add(const Instruction &instruction) {
             prev--;
             if(overlap(pos->first, prev->first)) {
                 ret = ERR_CONFLICT;
+                set.erase(pos);
             }
         }
         if(ret == ERR_SUCCESS) {
@@ -40,6 +41,7 @@ int InstructionSet::add(const Instruction &instruction) {
             {
                 if(overlap(pos->first, next->first)) {
                     ret = ERR_CONFLICT;
+                    set.erase(pos);
                 }
             }
         }
