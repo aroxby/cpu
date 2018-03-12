@@ -61,7 +61,8 @@ int InstructionSet::remove(const ByteString &opcode) {
 }
 
 int InstructionSet::decode(const ByteString &opcode, const Instruction **out) const {
-    ConstIterator pos = set.lower_bound(opcode);
+    ConstIterator found = set.lower_bound(opcode);
+    ConstIterator pos = found;
     Set::size_type matches = 0;
     int ret = ERR_BADRANGE;
     while(pos != set.end() && overlap(opcode, pos->first)) {
@@ -72,9 +73,9 @@ int InstructionSet::decode(const ByteString &opcode, const Instruction **out) co
         ret = ERR_CONFLICT;
         if(matches == 1) {
             ret = ERR_INCOMPLETE;
-            if(pos->first == opcode) {
+            if(found->first == opcode) {
                 ret = ERR_SUCCESS;
-                *out = &pos->second;
+                *out = &found->second;
             }
         }
     }
