@@ -116,9 +116,11 @@ TEST_F(TEST_CLASS, TestDecodeSingleMatch) {
 TEST_F(TEST_CLASS, TestDecodeExactMatch) {
     int iret;
     const Instruction *out;
+    ByteString opcode = {'z', '2', 'a'};
 
     out = nullptr;
-    iret = set.decode({'z', '2', 'a'}, &out);
+    iret = set.decode(opcode, &out);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Incorrectly matched instructions";
     ASSERT_NE(out, nullptr) << "Incorrectly Returned null instruction data";
+    ASSERT_EQ(out->opcode, opcode) << "Incorrectly matched instructions";
 }
