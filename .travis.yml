@@ -1,0 +1,10 @@
+language: cpp
+before_install: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 60
+install: make depend
+script: make test
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-6
