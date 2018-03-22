@@ -8,9 +8,10 @@ GTEST_BASE_DIR=$(EXT_DIR)/googletest
 GTEST_DIR=$(GTEST_BASE_DIR)/googletest
 GMOCK_DIR=$(GTEST_BASE_DIR)/googlemock
 
+GTEST_NO_PTHREAD=-DGTEST_HAS_PTHREAD=0
 GMOCK_INC=$(GMOCK_DIR)/include
 GTEST_INC=$(GTEST_DIR)/include
-GTEST_CPPFLAGS=-isystem $(GTEST_INC) -isystem $(GMOCK_INC) -I$(GTEST_DIR) -I$(GMOCK_DIR)
+GTEST_CPPFLAGS=$(GTEST_NO_PTHREAD) -isystem $(GTEST_INC) -isystem $(GMOCK_INC) -I$(GTEST_DIR) -I$(GMOCK_DIR)
 
 GTEST_SRCS=$(GTEST_DIR)/src/gtest-all.cc
 GTEST_OBJS=$(subst .cc,.o,$(GTEST_SRCS))
@@ -25,14 +26,13 @@ DEPENDS=$(GTEST_OUT)
 EXT_INC=$(GTEST_INC) $(GMOCK_INC)
 SRC_INC=src
 INC=$(SRC_INC) $(EXT_INC)
-CPPFLAGS=$(foreach d, $(INC), -I$d) # Source: https://stackoverflow.com/a/4134861
+CPPFLAGS=$(foreach d, $(INC), -I$d) $(GTEST_NO_PTHREAD)
 
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 TEST_OUT=$(TEST_DIR)/tests.exe
-TEST_CPPFLAGS=$(CPPFLAGS) -L $(GTEST_DIR) -lgtest
-TEST_LD_FLAGS=$(DEPENDS)
+TEST_LD_FLAGS=-L $(GTEST_DIR) -lgtest
 
 SRC_DIR=src
 SRCS=$(shell find $(SRC_DIR) -name *.cpp)
@@ -68,7 +68,7 @@ depend: $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(TEST_OUT): $(TEST_OBJS) $(OBJS)
-	$(CPP) $(TEST_OBJS) $(OBJS) -o $@ $(TEST_CPPFLAGS)
+	$(CPP) $(TEST_OBJS) $(OBJS) -o $@ $(TEST_LD_FLAGS)
 
 test: $(TEST_OUT)
 	$<
