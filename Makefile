@@ -2,6 +2,7 @@ EXT_DIR=external
 
 GTEST_REPO=https://github.com/google/googletest.git
 # Ideally, this would be a release tag but mingw compilation requires unreleased features
+# See: https://github.com/google/googletest/pull/721
 GTEST_TAG=master
 GTEST_BASE_DIR=$(EXT_DIR)/googletest
 GTEST_DIR=$(GTEST_BASE_DIR)/googletest
