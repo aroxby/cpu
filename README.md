@@ -116,6 +116,7 @@ The entire virtual machine will be implemented in software.
   * Arithmetic Operations
     * ADD
     * DIV
+    * MOD
     * MUL
     * SUB
   * Bitwise Operations
