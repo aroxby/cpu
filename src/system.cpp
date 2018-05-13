@@ -72,6 +72,7 @@ System::MemoryInstance System::resolveAtMost(SizeType address) const {
             ret = iterator->second;
         }
     }
+    // TODO: Check if this block is required
     if(ret.offset > address) {
         ret = MemoryInstance::null;
     }
