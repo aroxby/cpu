@@ -79,6 +79,7 @@ The entire virtual machine will be implemented in software.
   * 5 - Reserved
   * 6 - Reserved
   * 7 - Reserved
+  * FFFF - Triple Fault/Reset (not servicable)
 
 * 0 operand instructions (8-bits)
   * Debugging Options
