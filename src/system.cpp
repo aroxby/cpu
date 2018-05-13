@@ -33,7 +33,6 @@ int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
 
 int System::removeMemory(SizeType offset) {
     MemMap::size_type erased = mem.erase(offset);
-    assert(erased <= 1);
     int status = erased ? ERR_SUCCESS : ERR_BADRANGE;
     return status;
 }
