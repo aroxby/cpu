@@ -17,7 +17,7 @@ The entire virtual machine will be implemented in software.
   * Like modern CPUs allow for 32-bit threads in 64-bit mode
   (probably with page attributes)
 
-## JFF (Just For Fun) CPU architecture v0.2
+## JFF (Just For Fun) CPU architecture v0.3
 
 * Register width
   * 16-bit
