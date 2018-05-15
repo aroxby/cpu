@@ -7,13 +7,13 @@
 
 typedef std::vector<byte> ByteString;
 
-class CPU;
+class BaseCPU;
 
 class Instruction {
 public:
-    typedef void(*Callback)(CPU &cpu, const Instruction &instruction, const ByteString &params);
+    typedef void(*Callback)(BaseCPU &cpu, const Instruction &instruction, const ByteString &params);
     Instruction(ByteString opcode, SizeType instructionLength, Callback callback);
-    void execute(CPU &cpu, const ByteString &params) const;
+    void execute(BaseCPU &cpu, const ByteString &params) const;
     const ByteString opcode;
     const SizeType length;
     const Callback callback;
