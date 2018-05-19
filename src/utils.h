@@ -3,11 +3,11 @@
 
 #include "basetypes.h"
 
-void *advancePtr(void *vp, SizeType len) {
+inline void *advancePtr(void *vp, SizeType len) {
     return (void*)((unsigned char *)(vp) + len);
 }
 
-const void *advancePtr(const void *vp, SizeType len) {
+inline const void *advancePtr(const void *vp, SizeType len) {
     return (void*)((unsigned char *)(vp) + len);
 }
 
