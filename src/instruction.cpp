@@ -15,7 +15,7 @@ Instruction::Instruction(ByteString opcode, SizeType instructionLength, Callback
     : length(instructionLength), opcode(opcode), callback(callback) {
 }
 
-void Instruction::execute(CPU &cpu, const ByteString &params) const {
+void Instruction::execute(BaseCPU &cpu, const ByteString &params) const {
     return callback(cpu, *this, params);
 }
 
