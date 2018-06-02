@@ -49,6 +49,7 @@ public:
 
 private:
     const InstructionSet &set;
+    SizeType intBadInstruction;
 };
 
 #endif//_INC_BASECPU_H

@@ -48,5 +48,5 @@ bool Interruptable::serviceNextInterrupt() {
 }
 
 GenericCPU::GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction) :
-    BaseCPU(sys), set(set) {
+    BaseCPU(sys), set(set), intBadInstruction(intBadInstruction) {
 }
