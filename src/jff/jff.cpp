@@ -5,7 +5,7 @@
 
 class JFF : public GenericCPU {
 public:
-    JFF(const System &sys, const InstructionSet &set) : GenericCPU(sys, set, 1) { }
+    JFF(const System &sys, const InstructionSet &set);
 
     virtual void reset();
     virtual void signalInterrupt(SizeType interrupt);
@@ -19,3 +19,6 @@ protected:
 };
 
 #endif//_INC_JFF_H
+
+JFF::JFF(const System &sys, const InstructionSet &set) : GenericCPU(sys, set, 1) {
+}

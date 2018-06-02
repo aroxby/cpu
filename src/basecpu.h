@@ -8,8 +8,8 @@
 
 class BaseCPU {
 public:
-    BaseCPU(const System &sys): sys(sys), running(false) { }
-    virtual void stop() { running = false; }
+    BaseCPU(const System &sys);
+    virtual void stop();
     virtual bool startup();
 
     virtual void reset() = 0;
@@ -19,21 +19,10 @@ private:
     const System &sys;
     bool running;
 
-    int readMemory(SizeType offset, SizeType len, void *data) const {
-        return sys.readMemory(offset, len, data);
-    }
-
-    int writeMemory(SizeType offset, SizeType len, const void *data) const {
-        return sys.writeMemory(offset, len, data);
-    }
-
-    int readPort(PortType port, SizeType len, void *data) const {
-        return sys.readPort(port, len, data);
-    }
-
-    int writePort(PortType port, SizeType len, const void *data) const {
-        return sys.writePort(port, len, data);
-    }
+    int readMemory(SizeType offset, SizeType len, void *data) const;
+    int writeMemory(SizeType offset, SizeType len, const void *data) const;
+    int readPort(PortType port, SizeType len, void *data) const;
+    int writePort(PortType port, SizeType len, const void *data) const;
 };
 
 class Interruptable {
@@ -51,8 +40,7 @@ private:
 
 class GenericCPU : public BaseCPU, public Interruptable {
 public:
-    GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction) :
-        BaseCPU(sys), set(set) { }
+    GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction);
     virtual void tick();
 
     virtual SizeType registerWidth() = 0;
