@@ -4,4 +4,4 @@ JFF::JFF(const System &sys, const InstructionSet &set) : GenericCPU(sys, set, 1,
 }
 
 void JFF::reset() { throw; }
-void JFF::serviceInterrupt(SizeType interrupt) { throw; }
+void JFF::serviceInterrupt(Interrupt interrupt) { throw; }

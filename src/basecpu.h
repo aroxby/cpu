@@ -28,20 +28,20 @@ private:
 
 class Interruptable {
 public:
-    virtual void signalInterrupt(SizeType interrupt);
+    virtual void signalInterrupt(Interrupt interrupt);
 
 protected:
     virtual bool serviceNextInterrupt();
-    virtual void serviceInterrupt(SizeType interrupt) = 0;
+    virtual void serviceInterrupt(Interrupt interrupt) = 0;
 
 private:
-    typedef std::queue<SizeType> InterruptQueue;
+    typedef std::queue<Interrupt> InterruptQueue;
     InterruptQueue queue;
 };
 
 class GenericCPU : public BaseCPU, public Interruptable {
 public:
-    GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction, SizeType intBadOperand);
+    GenericCPU(const System &sys, const InstructionSet &set, Interrupt badInstruction, Interrupt badOperand);
     virtual void tick();
 
     virtual SizeType registerWidth() = 0;
@@ -54,8 +54,8 @@ private:
     bool readBytes(ByteString &buffer, const void * const base, SizeType length);
 
     const InstructionSet &set;
-    SizeType intBadInstruction;
-    SizeType intBadOperand;
+    Interrupt badInstruction;
+    Interrupt badOperand;
 };
 
 #endif//_INC_BASECPU_H

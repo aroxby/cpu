@@ -15,7 +15,7 @@ public:
     */
 
 protected:
-    virtual void serviceInterrupt(SizeType interrupt);
+    virtual void serviceInterrupt(Interrupt interrupt);
 };
 
 #endif//_INC_JFF_H

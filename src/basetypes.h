@@ -3,5 +3,6 @@
 
 typedef unsigned long long SizeType;
 typedef unsigned char byte;
+typedef SizeType Interrupt;
 
 #endif//_INC_BASETYPES_H

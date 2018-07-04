@@ -34,7 +34,7 @@ int BaseCPU::writePort(PortType port, SizeType len, const void *data) const {
     return sys.writePort(port, len, data);
 }
 
-void Interruptable::signalInterrupt(SizeType interrupt) {
+void Interruptable::signalInterrupt(Interrupt interrupt) {
     queue.push(interrupt);
 }
 
@@ -48,8 +48,8 @@ bool Interruptable::serviceNextInterrupt() {
     return ret;
 }
 
-GenericCPU::GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction, SizeType intBadOperand) :
-    BaseCPU(sys), set(set), intBadInstruction(intBadInstruction), intBadOperand(intBadOperand) {
+GenericCPU::GenericCPU(const System &sys, const InstructionSet &set, Interrupt badInstruction, Interrupt badOperand) :
+    BaseCPU(sys), set(set), badInstruction(badInstruction), badOperand(badOperand) {
 }
 
 void GenericCPU::tick() {
@@ -87,20 +87,20 @@ void GenericCPU::nextInstruction() {
     do {
         if(loadNextByte(opcode, instructionBase))
         {
-            signalInterrupt(intBadOperand);
+            signalInterrupt(badOperand);
         } else {
             decodeRc = set.decode(opcode, &inst);
         }
     } while(decodeRc == ERR_CONFLICT || decodeRc == ERR_INCOMPLETE);
 
     if(decodeRc != ERR_SUCCESS) {
-        signalInterrupt(intBadInstruction);
+        signalInterrupt(badInstruction);
     } else {
         SizeType operandLength = inst->length;
         SizeType offset = opcode.size();
         ByteString operands;
         if(!readBytes(operands, instructionBase, operandLength)) {
-            signalInterrupt(intBadOperand);
+            signalInterrupt(badOperand);
         } else {
             inst->execute(*this, operands);
         }
