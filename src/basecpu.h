@@ -15,14 +15,15 @@ public:
     virtual void reset() = 0;
     virtual void tick() = 0;
 
-private:
-    const System &sys;
-    bool running;
-
+protected:
     int readMemory(SizeType offset, SizeType len, void *data) const;
     int writeMemory(SizeType offset, SizeType len, const void *data) const;
     int readPort(PortType port, SizeType len, void *data) const;
     int writePort(PortType port, SizeType len, const void *data) const;
+
+private:
+    const System &sys;
+    bool running;
 };
 
 class Interruptable {
@@ -40,7 +41,7 @@ private:
 
 class GenericCPU : public BaseCPU, public Interruptable {
 public:
-    GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction);
+    GenericCPU(const System &sys, const InstructionSet &set, SizeType intBadInstruction, SizeType intBadOperand);
     virtual void tick();
 
     virtual SizeType registerWidth() = 0;
@@ -48,8 +49,13 @@ public:
     virtual bool interruptsEnabled() = 0;
 
 private:
+    void nextInstruction();
+    bool loadNextByte(ByteString &buffer, const void * const base);
+    bool readBytes(ByteString &buffer, const void * const base, SizeType length);
+
     const InstructionSet &set;
     SizeType intBadInstruction;
+    SizeType intBadOperand;
 };
 
 #endif//_INC_BASECPU_H
