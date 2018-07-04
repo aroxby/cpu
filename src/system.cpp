@@ -38,10 +38,12 @@ int System::removeMemory(SizeType offset) {
 }
 
 int System::bindPort(PortSocket &sock, PortType port) {
+    // FIXME: Implement Ports
     throw "Not Implemented";
 }
 
 int System::releasePort(PortType port) {
+    // FIXME: Implement Ports
     throw "Not Implemented";
 }
 
@@ -54,10 +56,12 @@ int System::writeMemory(SizeType offset, SizeType len, const void *data) const {
 }
 
 int System::readPort(PortType port, SizeType len, void *data) const {
+    // FIXME: Implement Ports
     throw "Not Implemented";
 }
 
 int System::writePort(PortType port, SizeType len, const void *data) const {
+    // FIXME: Implement Ports
     throw "Not Implemented";
 }
 
