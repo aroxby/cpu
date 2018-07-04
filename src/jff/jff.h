@@ -8,11 +8,9 @@ public:
     JFF(const System &sys, const InstructionSet &set);
 
     virtual void reset();
-    /*
     virtual SizeType registerWidth();
     virtual void *instructionPointer();
     virtual bool interruptsEnabled();
-    */
 
 protected:
     virtual void serviceInterrupt(Interrupt interrupt);
