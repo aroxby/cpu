@@ -50,7 +50,7 @@ TEST_F(TEST_CLASS, TestRunLoop) {
     cpu.startup();
     ASSERT_FALSE(cpu.isRunning()) << "Incorrect final CPU running state";
     ASSERT_EQ(cpu.ticks, TEST_TICK_COUNT) << "Incorrect final CPU tick count";
-    ASSERT_EQ(cpu.resets, 1) << "Incorrect initial CPU reset count";
+    ASSERT_EQ(cpu.resets, 1) << "Incorrect final CPU reset count";
 }
 
 TEST_F(TEST_CLASS, TestInterruptService) {
