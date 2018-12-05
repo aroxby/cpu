@@ -11,6 +11,7 @@ public:
     BaseCPU(const System &sys);
     virtual void stop();
     virtual bool startup();
+    bool isRunning();
 
     virtual void reset() = 0;
     virtual void tick() = 0;

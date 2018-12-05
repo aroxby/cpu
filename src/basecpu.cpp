@@ -19,6 +19,10 @@ bool BaseCPU::startup() {
     return started;
 }
 
+bool isRunning() {
+    return running;
+}
+
 int BaseCPU::readMemory(SizeType offset, SizeType len, void *data) const {
     return sys.readMemory(offset, len, data);
 }
