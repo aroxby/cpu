@@ -19,7 +19,7 @@ bool BaseCPU::startup() {
     return started;
 }
 
-bool isRunning() {
+bool BaseCPU::isRunning() {
     return running;
 }
 
