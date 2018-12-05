@@ -107,6 +107,8 @@ void GenericCPU::nextInstruction() {
         if(!readBytes(operands, instructionBase, operandLength)) {
             signalInterrupt(badOperand);
         } else {
+            // FIXME: Advance instruction pointer
+            // It's import this be done before running the instruction for things like RST to work
             inst->execute(*this, operands);
         }
     }
