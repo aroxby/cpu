@@ -11,6 +11,7 @@ void BaseCPU::stop() {
 bool BaseCPU::startup() {
     bool started = false;
     if (!running) {
+        running = true;
         started = true;
         reset();
         while(running) { tick(); }
