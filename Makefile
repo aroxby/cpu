@@ -45,7 +45,7 @@ CPP=g++
 default: all
 
 $(GTEST_BASE_DIR):
-	$(GIT) clone -c advice.detachedHead=false $(GTEST_REPO) -b $(GTEST_TAG) $@
+	$(GIT) clone -c advice.detachedHead=false --depth=1 $(GTEST_REPO) -b $(GTEST_TAG) $@
 
 $(GTEST_SRCS): %.cc: $(GTEST_BASE_DIR)
 
