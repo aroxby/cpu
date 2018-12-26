@@ -25,6 +25,7 @@ EXT_INC=$(GTEST_INC) $(GMOCK_INC)
 SRC_INC=src
 INC=$(SRC_INC) $(EXT_INC)
 CPPFLAGS=$(foreach d, $(INC), -I$d) $(GTEST_NO_PTHREAD)
+GIT_FLAGS=-c advice.detachedHead=false --depth=1
 
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
@@ -45,7 +46,7 @@ CPP=g++
 default: all
 
 $(GTEST_BASE_DIR):
-	$(GIT) clone -c advice.detachedHead=false --depth=1 $(GTEST_REPO) -b $(GTEST_TAG) $@
+	$(GIT) clone $(GIT_FLAGS) $(GTEST_REPO) -b $(GTEST_TAG) $@
 
 $(GTEST_SRCS): %.cc: $(GTEST_BASE_DIR)
 
