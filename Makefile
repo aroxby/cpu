@@ -1,9 +1,7 @@
 EXT_DIR=external
 
 GTEST_REPO=https://github.com/google/googletest.git
-# Ideally, this would be a release tag but mingw compilation requires unreleased features
-# See: https://github.com/google/googletest/pull/721
-GTEST_TAG=master
+GTEST_TAG=release-1.8.1
 GTEST_BASE_DIR=$(EXT_DIR)/googletest
 GTEST_DIR=$(GTEST_BASE_DIR)/googletest
 GMOCK_DIR=$(GTEST_BASE_DIR)/googlemock
@@ -47,7 +45,7 @@ CPP=g++
 default: all
 
 $(GTEST_BASE_DIR):
-	$(GIT) clone $(GTEST_REPO) -b $(GTEST_TAG) $@
+	$(GIT) clone -c advice.detachedHead=false $(GTEST_REPO) -b $(GTEST_TAG) $@
 
 $(GTEST_SRCS): %.cc: $(GTEST_BASE_DIR)
 
