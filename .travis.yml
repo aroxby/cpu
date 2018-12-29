@@ -1,7 +1,10 @@
 language: cpp
 before_install: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 60
-install: make depend
+install:
+  - pip install --upgrade --user cpp-coveralls
+  - make depend
 script: make test
+after_success: coveralls
 addons:
   apt:
     sources:
