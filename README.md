@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/aroxby/cpu.svg?branch=master)](https://travis-ci.org/aroxby/cpu)
+[![Coverage Status](https://coveralls.io/repos/github/aroxby/cpu/badge.svg?branch=master)](https://coveralls.io/github/aroxby/cpu?branch=master)
+
 # Virtual CPU
 This my attempt at building a virtual CPU.  This is just for fun and learning.
 The entire virtual machine will be implemented in software.
