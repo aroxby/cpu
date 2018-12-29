@@ -36,6 +36,7 @@ TEST_LD_FLAGS=-L $(GTEST_DIR) -lgtest
 SRC_DIR=src
 SRCS=$(shell find $(SRC_DIR) -name *.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
+TOBJS=$(subst .o,.t.o,$(OBJS))
 
 AR=ar
 GIT=git
@@ -66,8 +67,11 @@ depend: $(DEPENDS)
 %.o: %.cpp $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
-$(TEST_OUT): $(TEST_OBJS) $(OBJS)
-	$(CPP) $(TEST_OBJS) $(OBJS) -o $@ $(TEST_LD_FLAGS)
+%.t.o: %.cpp $(DEPENDS)
+	$(CPP) $(CPPFLAGS) -c $< -o $@
+
+$(TEST_OUT): $(TEST_OBJS) $(TOBJS)
+	$(CPP) $(TEST_OBJS) $(TOBJS) -o $@ $(TEST_LD_FLAGS)
 
 test: $(TEST_OUT)
 	$<
