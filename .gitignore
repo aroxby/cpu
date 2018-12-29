@@ -34,3 +34,7 @@ Git Shell.lnk
 
 # External dependencies
 /external/
+
+# Code coverage files
+*.gcda
+*.gcno
