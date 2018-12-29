@@ -25,13 +25,14 @@ EXT_INC=$(GTEST_INC) $(GMOCK_INC)
 SRC_INC=src
 INC=$(SRC_INC) $(EXT_INC)
 CPPFLAGS=$(foreach d, $(INC), -I$d) $(GTEST_NO_PTHREAD)
+TCPPFLAGS=$(CPPFLAGS) -coverage
 GIT_FLAGS=-c advice.detachedHead=false --depth=1
 
 TEST_DIR=tests
 TEST_SRCS=$(shell find $(TEST_DIR) -name *.cpp)
 TEST_OBJS=$(subst .cpp,.o,$(TEST_SRCS))
 TEST_OUT=$(TEST_DIR)/tests.exe
-TEST_LD_FLAGS=-L $(GTEST_DIR) -lgtest
+TEST_LD_FLAGS=-L $(GTEST_DIR) -lgtest -coverage
 
 SRC_DIR=src
 SRCS=$(shell find $(SRC_DIR) -name *.cpp)
@@ -68,7 +69,7 @@ depend: $(DEPENDS)
 	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 %.t.o: %.cpp $(DEPENDS)
-	$(CPP) $(CPPFLAGS) -c $< -o $@
+	$(CPP) $(TCPPFLAGS) -c $< -o $@
 
 $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 	$(CPP) $(TEST_OBJS) $(TOBJS) -o $@ $(TEST_LD_FLAGS)
