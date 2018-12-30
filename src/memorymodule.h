@@ -14,7 +14,7 @@ public:
     virtual int writeMemory(SizeType offset, SizeType len, const void *buffer) = 0;
 
     // Allow for proper polymorphic destruction
-    virtual ~MemoryModule() { }
+    virtual ~MemoryModule();
 };
 
 #endif//_INC_MEMORYMODULE_H
