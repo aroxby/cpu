@@ -1,13 +1,6 @@
 language: cpp
-before_install: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 60
-install:
-  - pip install --upgrade --user cpp-coveralls
-  - make depend
-script: make test
+services: docker
+before_install: pip install --upgrade --user cpp-coveralls
+install: docker build -t $TRAVIS_REPO_SLUG .
+script: docker run --rm -v $(pwd):/src:Z $TRAVIS_REPO_SLUG
 after_success: coveralls
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-6
