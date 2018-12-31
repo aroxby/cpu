@@ -2,7 +2,7 @@
 #include "errors.h"
 #include "staticmemory.h"
 
-StaticMemory::StaticMemory(SizeType len) : size(len), self(new unsigned char[size]) {
+StaticMemory::StaticMemory(SizeType len) : size(len), self(new unsigned char[len]) {
 }
 
 int StaticMemory::readMemory(SizeType offset, SizeType len, void *buffer) {
