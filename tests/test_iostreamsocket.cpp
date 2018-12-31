@@ -20,7 +20,7 @@ TEST_F(TEST_CLASS, TestRead) {
     
     iret = sock.read(buffer, INIT_LEN, 0);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Read failed";
-    ASSERT_TRUE(!memcmp(buffer, INIT_DATA, 10)) << "Read wrong data(" << buffer << ")";
+    ASSERT_TRUE(!memcmp(buffer, INIT_DATA, INIT_LEN)) << "Read wrong data(" << buffer << ")";
 }
 
 TEST_F(TEST_CLASS, TestWrite) {
@@ -30,5 +30,5 @@ TEST_F(TEST_CLASS, TestWrite) {
     ASSERT_EQ(iret, ERR_SUCCESS) << "Read failed";
     
     const char *actual = out.str().c_str();
-    ASSERT_TRUE(!memcmp(actual, INIT_DATA, 10)) << "Wrote wrong data(" << actual << ")";
+    ASSERT_TRUE(!memcmp(actual, INIT_DATA, INIT_LEN)) << "Wrote wrong data(" << actual << ")";
 }
