@@ -11,6 +11,14 @@ protected:
     StrictMockMemoryModule mem;
 };
 
+TEST_F(TEST_CLASS, TestNoMemory) {
+    int iret;
+    unsigned char dummy_buffer[10];
+
+    iret = sys.readMemory(10, 5, dummy_buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Read of empty memory succeeded";
+}
+
 TEST_F(TEST_CLASS, TestBasicMemoryInstall) {
     int iret;
 
@@ -131,4 +139,26 @@ TEST_F(TEST_CLASS, TestMemoryReadWrite) {
 
     iret = sys.readMemory(10, 10, readData);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Memory read failed";
+}
+
+TEST_F(TEST_CLASS, TestUnderMemoryBound) {
+    int iret;
+    unsigned char dummy_buffer[10];
+
+    iret = sys.installMemory(mem, 10, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Module installation failed";
+
+    iret = sys.readMemory(0, 5, dummy_buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Invalid memory read succeeded";
+}
+
+TEST_F(TEST_CLASS, TestOverMemoryBound) {
+    int iret;
+    unsigned char dummy_buffer[10];
+
+    iret = sys.installMemory(mem, 10, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Module installation failed";
+
+    iret = sys.readMemory(20, 5, dummy_buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Invalid memory read succeeded";
 }
