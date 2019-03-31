@@ -139,7 +139,7 @@ TEST_F(TEST_CLASS, TestMemoryReadWrite) {
     ASSERT_EQ(iret, ERR_SUCCESS) << "Module installation failed";
 
     iret = sys.writeMemory(10, 10, writeData);
-    ASSERT_EQ(iret, ERR_SUCCESS) << "Memory read failed";
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Memory write failed";
 
     iret = sys.readMemory(10, 10, readData);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Memory read failed";
