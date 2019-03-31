@@ -2,6 +2,7 @@
 #include <errors.h>
 #include <system.h>
 #include "mock_memorymodule.h"
+#include "mock_portsocket.h"
 
 #define TEST_CLASS SystemTest
 
@@ -9,7 +10,10 @@ class TEST_CLASS : public testing::Test {
 protected:
     System sys;
     StrictMockMemoryModule mem;
+    StrictMockPortSocket port;
 };
+
+// MEMORY //
 
 TEST_F(TEST_CLASS, TestNoMemory) {
     int iret;
@@ -161,4 +165,96 @@ TEST_F(TEST_CLASS, TestOverMemoryBound) {
 
     iret = sys.readMemory(20, 5, dummy_buffer);
     ASSERT_EQ(iret, ERR_BADRANGE) << "Invalid memory read succeeded";
+}
+
+// PORTS //
+
+TEST_F(TEST_CLASS, TestNoPorts) {
+    int iret;
+    unsigned char dummy_buffer[10];
+
+    iret = sys.readPort(0, 10, dummy_buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Read of empty port succeeded";
+}
+
+TEST_F(TEST_CLASS, TestBasicPortBind) {
+    int iret;
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
+}
+
+TEST_F(TEST_CLASS, TestOverlapPortBind) {
+    int iret;
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_CONFLICT) << "Invalid port bind succeeded";
+}
+
+TEST_F(TEST_CLASS, TestMultiplePortBind) {
+    int iret;
+
+    iret = sys.bindPort(port, 5);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port 1 bind failed";
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port 2 bind failed";
+}
+
+TEST_F(TEST_CLASS, TestPortRelease) {
+    int iret;
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_NE(iret, ERR_SUCCESS) << "Overlapping bind did not fail";
+
+    iret = sys.releasePort(10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port release failed";
+
+    iret = sys.bindPort(port, 10);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
+}
+
+TEST_F(TEST_CLASS, TestPortRead) {
+    unsigned char readData[10];
+    int iret;
+
+    EXPECT_CALL(port, read(1, 10, readData))
+        .WillOnce(testing::Return(ERR_SUCCESS));
+
+    iret = sys.bindPort(port, 1);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
+
+    iret = sys.readPort(1, 10, readData);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port read failed";
+}
+
+TEST_F(TEST_CLASS, TestPortWrite) {
+    const void *writeData = "123456789";  // 10 bytes with \0
+    int iret;
+
+    EXPECT_CALL(port, write(1, 10, writeData))
+        .WillOnce(testing::Return(ERR_SUCCESS));
+
+    iret = sys.bindPort(port, 1);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port installation failed";
+
+    iret = sys.writePort(1, 10, writeData);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Port write failed";
+}
+
+TEST_F(TEST_CLASS, TestUnboundPortReadWrite) {
+    void *buffer = NULL;
+    int iret;
+
+    iret = sys.readPort(1, 10, buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Unbound port read succeeded";
+
+    iret = sys.writePort(1, 10, buffer);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Unbound port write succeeded";
 }
