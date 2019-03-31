@@ -4,7 +4,7 @@
 #include <iostreamsocket.h>
 
 #define TEST_CLASS IOStreamSocketTest
-#define INIT_DATA ("dat_data_tho")
+#define INIT_DATA ("dat data tho")
 #define INIT_LEN (12)
 
 class TEST_CLASS : public testing::Test {
