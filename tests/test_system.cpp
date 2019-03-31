@@ -115,7 +115,7 @@ TEST_F(TEST_CLASS, TestMemoryRemove) {
     ASSERT_EQ(iret, ERR_SUCCESS) << "Module installation failed";
 
     iret = sys.installMemory(mem, 10, 10);
-    ASSERT_NE(iret, ERR_SUCCESS) << "Overlapping installation did not fail";
+    ASSERT_EQ(iret, ERR_CONFLICT) << "Overlapping installation did not fail";
 
     iret = sys.removeMemory(10);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Module uninstallation failed";
@@ -211,7 +211,7 @@ TEST_F(TEST_CLASS, TestPortRelease) {
     ASSERT_EQ(iret, ERR_SUCCESS) << "Port bind failed";
 
     iret = sys.bindPort(port, 10);
-    ASSERT_NE(iret, ERR_SUCCESS) << "Overlapping bind did not fail";
+    ASSERT_EQ(iret, ERR_CONFLICT) << "Overlapping bind did not fail";
 
     iret = sys.releasePort(10);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Port release failed";
