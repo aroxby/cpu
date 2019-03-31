@@ -4,9 +4,6 @@
 #include "errors.h"
 #include "utils.h"
 
-//#include <iostream>
-//using namespace std;
-
 const System::MemoryInstance System::MemoryInstance::null(NULL, 0, 0);
 
 int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
@@ -101,10 +98,7 @@ System::MemoryInstance System::resolveAtMost(SizeType address) const {
             ret = iterator->second;
         }
     }
-    // TODO: Check if this block is required
-    if(ret.offset > address) {
-        ret = MemoryInstance::null;
-    }
+
     return ret;
 }
 
