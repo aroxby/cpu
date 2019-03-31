@@ -8,8 +8,8 @@
 class IOStreamSocket: public PortSocket {
 public:
     IOStreamSocket(std::istream &in, std::ostream &out);
-    virtual int read(void *buffer, SizeType len, PortType port);
-    virtual int write(const void *buffer, SizeType len, PortType port);
+    virtual int read(PortType port, SizeType len, void *buffer);
+    virtual int write(PortType port, SizeType len, const void *buffer);
 
 private:
     std::istream &in;

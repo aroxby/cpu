@@ -18,7 +18,7 @@ TEST_F(TEST_CLASS, TestRead) {
     int iret;
     char *buffer[INIT_LEN+1] = {0};
     
-    iret = sock.read(buffer, INIT_LEN, 0);
+    iret = sock.read(0, INIT_LEN, buffer);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Read failed";
     ASSERT_TRUE(!memcmp(buffer, INIT_DATA, INIT_LEN)) << "Read wrong data(" << buffer << ")";
 }
@@ -26,7 +26,7 @@ TEST_F(TEST_CLASS, TestRead) {
 TEST_F(TEST_CLASS, TestWrite) {
     int iret;
     
-    iret = sock.write(INIT_DATA, INIT_LEN, 0);
+    iret = sock.write(0, INIT_LEN, INIT_DATA);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Read failed";
     
     const char *actual = out.str().c_str();
