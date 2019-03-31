@@ -49,10 +49,13 @@ private:
     };
 
     typedef std::map<SizeType, const MemoryInstance> MemMap;
-    typedef std::map<PortType, const PortSocket *> PortMap;
+    typedef std::map<PortType, PortSocket *> PortMap;
 
     MemMap mem;
     PortMap ports;
+
+    // Find the PortSocket assigned to port
+    PortSocket *getSocket(PortType port) const;
 
     // Find installed MemoryInstance with base address <= address
     MemoryInstance resolveAtMost(SizeType address) const;

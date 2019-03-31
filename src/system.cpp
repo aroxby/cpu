@@ -38,13 +38,15 @@ int System::removeMemory(SizeType offset) {
 }
 
 int System::bindPort(PortSocket &sock, PortType port) {
-    // FIXME: Implement Ports
-    throw "Not Implemented";
+    auto inserted = ports.insert({port, &sock});
+    int status = inserted.second ? ERR_SUCCESS : ERR_CONFLICT;
+    return status;
 }
 
 int System::releasePort(PortType port) {
-    // FIXME: Implement Ports
-    throw "Not Implemented";
+    PortMap::size_type erased = ports.erase(port);
+    int status = erased ? ERR_SUCCESS : ERR_BADRANGE;
+    return status;
 }
 
 int System::readMemory(SizeType offset, SizeType len, void *data) const {
@@ -56,13 +58,36 @@ int System::writeMemory(SizeType offset, SizeType len, const void *data) const {
 }
 
 int System::readPort(PortType port, SizeType len, void *data) const {
-    // FIXME: Implement Ports
-    throw "Not Implemented";
+    int status;
+    PortSocket *sock = getSocket(port);
+    if(!sock) {
+        status = ERR_BADRANGE;
+    } else {
+        status = sock->read(port, len, data);
+    }
+    return status;
 }
 
 int System::writePort(PortType port, SizeType len, const void *data) const {
-    // FIXME: Implement Ports
-    throw "Not Implemented";
+    int status;
+    PortSocket *sock = getSocket(port);
+    if(!sock) {
+        status = ERR_BADRANGE;
+    } else {
+        status = sock->write(port, len, data);
+    }
+    return status;
+}
+
+PortSocket *System::getSocket(PortType port) const {
+    auto iterator = ports.find(port);
+    PortSocket *sock;
+    if(iterator == ports.end()) {
+        sock = NULL;
+    } else {
+        sock = iterator->second;
+    }
+    return sock;
 }
 
 System::MemoryInstance System::resolveAtMost(SizeType address) const {
