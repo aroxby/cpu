@@ -4,13 +4,11 @@
 IOStreamSocket::IOStreamSocket(std::istream &in, std::ostream &out) : in(in), out(out) { }
 
 int IOStreamSocket::read(PortType port, SizeType len, void *buffer) {
-    // FIXME: Handle errors
     in.read((char*)buffer, len);
-    return ERR_SUCCESS;
+    return in.good() ? ERR_SUCCESS : ERR_INCOMPLETE;
 }
 
 int IOStreamSocket::write(PortType port, SizeType len, const void *buffer) {
-    // FIXME: Handle errors
     out.write((char*)buffer, len);
-    return ERR_SUCCESS;
+    return !out.fail() ? ERR_SUCCESS : ERR_INCOMPLETE;
 }
