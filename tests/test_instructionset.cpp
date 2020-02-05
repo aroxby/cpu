@@ -9,11 +9,13 @@ protected:
     TEST_CLASS();
     InstructionSet set;
     Instruction low, high;
+    static Instruction seed1, seed2;
 };
 
+Instruction TEST_CLASS::seed1({'z', '1'}, 0, nullptr);
+Instruction TEST_CLASS::seed2({'z', '2', 'a'}, 0, nullptr);
+
 TEST_CLASS::TEST_CLASS() : low({'a', 'b'}, 0, nullptr), high({'a', 'b', 'c'}, 0, nullptr) {
-    Instruction seed1({'z', '1'}, 0, nullptr);
-    Instruction seed2({'z', '2', 'a'}, 0, nullptr);
     set.add(seed1);
     set.add(seed2);
     int iret = set.count();
@@ -81,6 +83,16 @@ TEST_F(TEST_CLASS, TestAddDiffernt) {
 
     iret = set.count();
     ASSERT_EQ(iret, 4) << "Incorrect instruction count";
+}
+
+TEST_F(TEST_CLASS, TestRemove) {
+    int iret;
+
+    iret = set.remove(seed1.opcode);
+    ASSERT_EQ(iret, ERR_SUCCESS) << "Failed to remove instruction";
+
+    iret = set.count();
+    ASSERT_EQ(iret, 1) << "Incorrect instruction count";
 }
 
 TEST_F(TEST_CLASS, TestDecodeMultipleMatches) {
