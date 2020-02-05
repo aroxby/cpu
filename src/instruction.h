@@ -11,12 +11,10 @@ class BaseCPU;
 
 class Instruction {
 public:
-    typedef void(*Callback)(BaseCPU &cpu, const Instruction &instruction, const ByteString &params);
-    Instruction(ByteString opcode, SizeType instructionLength, Callback callback);
-    void execute(BaseCPU &cpu, const ByteString &params) const;
+    Instruction(ByteString opcode, SizeType instructionLength);
+    virtual void execute(BaseCPU &cpu, const ByteString &params) const = 0;
     const ByteString opcode;
     const SizeType length;
-    const Callback callback;
 };
 
 class InstructionSet {
@@ -34,8 +32,8 @@ public:
     SizeType count() const;
 
 private:
-    typedef std::pair<ByteString, Instruction> InstructionCode;
-    typedef std::map<ByteString, Instruction> Set;
+    typedef std::pair<ByteString, const Instruction &> InstructionCode;
+    typedef std::map<ByteString, const Instruction &> Set;
     typedef Set::iterator Iterator;
     typedef Set::const_iterator ConstIterator;
     typedef std::pair<Iterator, bool> Insertion;

@@ -11,12 +11,8 @@ bool overlap(const ByteString &a, const ByteString &b) {
     return cmp == 0;
 }
 
-Instruction::Instruction(ByteString opcode, SizeType instructionLength, Callback callback)
-    : length(instructionLength), opcode(opcode), callback(callback) {
-}
-
-void Instruction::execute(BaseCPU &cpu, const ByteString &params) const {
-    return callback(cpu, *this, params);
+Instruction::Instruction(ByteString opcode, SizeType instructionLength)
+    : length(instructionLength), opcode(opcode) {
 }
 
 int InstructionSet::add(const Instruction &instruction) {

@@ -4,18 +4,26 @@
 
 #define TEST_CLASS InstructionSetTest
 
+class DummyInstruction : public Instruction {
+public:
+    DummyInstruction(ByteString opcode, SizeType instructionLength)
+        : Instruction(opcode, instructionLength) {
+    }
+
+    virtual void execute(BaseCPU &cpu, const ByteString &params) const {
+    }
+};
+
 class TEST_CLASS : public testing::Test {
 protected:
     TEST_CLASS();
     InstructionSet set;
-    Instruction low, high;
-    static Instruction seed1, seed2;
+    DummyInstruction seed1, seed2, low, high;
 };
 
-Instruction TEST_CLASS::seed1({'z', '1'}, 0, nullptr);
-Instruction TEST_CLASS::seed2({'z', '2', 'a'}, 0, nullptr);
-
-TEST_CLASS::TEST_CLASS() : low({'a', 'b'}, 0, nullptr), high({'a', 'b', 'c'}, 0, nullptr) {
+TEST_CLASS::TEST_CLASS() :
+    seed1({'z', '1'}, 0), seed2({'z', '2', 'a'}, 0), low({'a', 'b'}, 0), high({'a', 'b', 'c'}, 0)
+{
     set.add(seed1);
     set.add(seed2);
     int iret = set.count();
@@ -73,7 +81,7 @@ TEST_F(TEST_CLASS, TestAddSuccess) {
 
 TEST_F(TEST_CLASS, TestAddDiffernt) {
     int iret;
-    Instruction other({'v'}, 0, nullptr);
+    DummyInstruction other({'v'}, 0);
 
     iret = set.add(low);
     ASSERT_EQ(iret, ERR_SUCCESS) << "Failed to add instruction";

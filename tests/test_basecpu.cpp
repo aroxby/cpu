@@ -1,4 +1,3 @@
-#include <cassert>
 #include <gtest/gtest.h>
 #include <system.h>
 #include <basecpu.h>
