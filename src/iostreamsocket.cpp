@@ -9,6 +9,6 @@ int IOStreamSocket::read(PortType port, SizeType len, void *buffer) {
 }
 
 int IOStreamSocket::write(PortType port, SizeType len, const void *buffer) {
-    out.write((char*)buffer, len);
+    out.write((const char*)buffer, len);
     return !out.fail() ? ERR_SUCCESS : ERR_INCOMPLETE;
 }
