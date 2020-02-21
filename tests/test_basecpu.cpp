@@ -6,19 +6,33 @@
 
 class BaseTestCPU : public BaseCPU {
 public:
-    BaseTestCPU(int maxTicks, const System &sys) : maxTicks(maxTicks), ticks(0), resets(0), BaseCPU(sys) { }
-    void reset() { resets++; }
+    BaseTestCPU(int maxTicks, const System &sys) :
+        maxTicks(maxTicks), resets(0), startups(0), ticks(0), BaseCPU(sys) { }
+
+    virtual bool startup() {
+        bool started = BaseCPU::startup();
+        if(started) {
+            startups++;
+        }
+    }
+
+    void reset() {
+        resets++;
+    }
+
     void tick() {
         assert(isRunning());
         ticks++;
         if(ticks>= maxTicks) {
+            startup();  // Seems weird but we do this to test for double start
             stop();
         }
     }
 
-    int ticks;
-    int resets;
     int maxTicks;
+    int resets;
+    int startups;
+    int ticks;
 };
 
 class TestInterruptable : public Interruptable {
@@ -46,10 +60,31 @@ TEST_F(TEST_CLASS, TestRunLoop) {
     ASSERT_FALSE(cpu.isRunning()) << "Incorrect initial CPU running state";
     ASSERT_EQ(cpu.ticks, 0) << "Incorrect initial CPU tick count";
     ASSERT_EQ(cpu.resets, 0) << "Incorrect initial CPU reset count";
-    cpu.startup();
+    bool started = cpu.startup();
+    ASSERT_TRUE(started) << "CPU failed to indicate startup";
     ASSERT_FALSE(cpu.isRunning()) << "Incorrect final CPU running state";
     ASSERT_EQ(cpu.ticks, TEST_TICK_COUNT) << "Incorrect final CPU tick count";
     ASSERT_EQ(cpu.resets, 1) << "Incorrect final CPU reset count";
+    ASSERT_EQ(cpu.startups, 1) << "Incorrect final CPU startup count";
+}
+
+TEST_F(TEST_CLASS, TestStopStart) {
+    ASSERT_FALSE(cpu.isRunning()) << "Incorrect initial CPU running state";
+    ASSERT_EQ(cpu.ticks, 0) << "Incorrect initial CPU tick count";
+    ASSERT_EQ(cpu.resets, 0) << "Incorrect initial CPU reset count";
+    bool started = cpu.startup();
+    ASSERT_TRUE(started) << "CPU failed to indicate startup";
+    ASSERT_FALSE(cpu.isRunning()) << "Incorrect final CPU running state";
+    ASSERT_EQ(cpu.ticks, TEST_TICK_COUNT) << "Incorrect final CPU tick count";
+    ASSERT_EQ(cpu.resets, 1) << "Incorrect final CPU reset count";
+    ASSERT_EQ(cpu.startups, 1) << "Incorrect final CPU startup count";
+
+    started = cpu.startup();
+    ASSERT_TRUE(started) << "CPU failed to indicate startup";
+    ASSERT_FALSE(cpu.isRunning()) << "Incorrect final CPU running state";
+    ASSERT_EQ(cpu.ticks, TEST_TICK_COUNT + 1) << "Incorrect final CPU tick count";
+    ASSERT_EQ(cpu.resets, 2) << "Incorrect final CPU reset count";
+    ASSERT_EQ(cpu.startups, 2) << "Incorrect final CPU startup count";
 }
 
 TEST_F(TEST_CLASS, TestInterruptService) {
