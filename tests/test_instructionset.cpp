@@ -103,6 +103,16 @@ TEST_F(TEST_CLASS, TestRemove) {
     ASSERT_EQ(iret, 1) << "Incorrect instruction count";
 }
 
+TEST_F(TEST_CLASS, TestRemoveNoMatch) {
+    int iret;
+
+    iret = set.remove(low.opcode);
+    ASSERT_EQ(iret, ERR_BADRANGE) << "Removed non-existent instruction";
+
+    iret = set.count();
+    ASSERT_EQ(iret, 2) << "Incorrect instruction count";
+}
+
 TEST_F(TEST_CLASS, TestDecodeMultipleMatches) {
     int iret;
     const Instruction *out;
