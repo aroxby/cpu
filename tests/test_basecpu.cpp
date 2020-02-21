@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include <system.h>
+#include <errors.h>
 #include <basecpu.h>
+#include "mock_system.h"
 
 #define TEST_CLASS BaseCPUTest
 
@@ -29,6 +30,22 @@ public:
         }
     }
 
+    int doReadMemory(SizeType offset, SizeType len, void *data) const {
+        return BaseCPU::readMemory(offset, len, data);
+    }
+
+    int doWriteMemory(SizeType offset, SizeType len, const void *data) const {
+        return BaseCPU::writeMemory(offset, len, data);
+    }
+
+    int doReadPort(PortType port, SizeType len, void *data) const {
+        return BaseCPU::readPort(port, len, data);
+    }
+
+    int doWritePort(PortType port, SizeType len, const void *data) const {
+        return BaseCPU::writePort(port, len, data);
+    }
+
     int maxTicks;
     int resets;
     int startups;
@@ -53,7 +70,7 @@ protected:
     TEST_CLASS() : cpu(TEST_TICK_COUNT, dummySystem) { }
     BaseTestCPU cpu;
     TestInterruptable server;
-    System dummySystem;
+    StrictMockSystem dummySystem;
 };
 
 TEST_F(TEST_CLASS, TestRunLoop) {
@@ -98,4 +115,17 @@ TEST_F(TEST_CLASS, TestInterruptService) {
     ASSERT_EQ(server.serviced.size(), 2) << "Incorrect number of interrupts serviced";
     ASSERT_EQ(server.serviced.at(1), 5) << "Incorrect interrupt serviced";
     ASSERT_FALSE(server._next()) << "Incorrect service of empty queue";
+}
+
+TEST_F(TEST_CLASS, TestSystemPassThru) {
+    // These constants aren't important.  I just wanted to make sure calls aren't crossed
+    EXPECT_CALL(dummySystem, readMemory(2, 1, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, writeMemory(1, 2, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, readPort(2, 3, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, writePort(2, 4, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+
+    cpu.doReadMemory(2, 1, 0);
+    cpu.doWriteMemory(1, 2, 0);
+    cpu.doReadPort(2, 3, 0);
+    cpu.doWritePort(2, 4, 0);
 }
