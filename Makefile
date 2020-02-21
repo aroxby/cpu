@@ -25,7 +25,7 @@ EXT_INC=$(GTEST_INC) $(GMOCK_INC)
 SRC_INC=src
 INC=$(SRC_INC) $(EXT_INC)
 CPPFLAGS=$(foreach d, $(INC), -I$d) $(GTEST_NO_PTHREAD)
-TCPPFLAGS=$(CPPFLAGS) -coverage
+TCPPFLAGS=$(CPPFLAGS) -coverage -D_TEST
 GIT_FLAGS=-c advice.detachedHead=false --depth=1
 
 TEST_DIR=tests

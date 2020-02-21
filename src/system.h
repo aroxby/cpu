@@ -10,28 +10,28 @@ class System {
 // All methods return 0 on success and non-zero on error
 public:
     // Installs mod to support the memory at offset for size
-    int installMemory(MemoryModule &mod, SizeType offset, SizeType size);
+    MOCKABLE int installMemory(MemoryModule &mod, SizeType offset, SizeType size);
 
     // Removes the MemoryModule that supports the offset
-    int removeMemory(SizeType offset);
+    MOCKABLE int removeMemory(SizeType offset);
 
     //Installs sock as the read/write interface on port
-    int bindPort(PortSocket &sock, PortType port);
+    MOCKABLE int bindPort(PortSocket &sock, PortType port);
 
     // Removes the PortSocket on port
-    int releasePort(PortType port);
+    MOCKABLE int releasePort(PortType port);
 
     // Read the memory from the specified range (must be continuous) into data
-    int readMemory(SizeType offset, SizeType len, void *data) const;
+    MOCKABLE int readMemory(SizeType offset, SizeType len, void *data) const;
 
     // Write data into the specified memory range (must be continuous)
-    int writeMemory(SizeType offset, SizeType len, const void *data) const;
+    MOCKABLE int writeMemory(SizeType offset, SizeType len, const void *data) const;
 
     // Read data from port
-    int readPort(PortType port, SizeType len, void *data) const;
+    MOCKABLE int readPort(PortType port, SizeType len, void *data) const;
 
     // Write data to port
-    int writePort(PortType port, SizeType len, const void *data) const;
+    MOCKABLE int writePort(PortType port, SizeType len, const void *data) const;
 
 private:
     class MemoryInstance {
