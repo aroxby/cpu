@@ -15,6 +15,7 @@ public:
         if(started) {
             startups++;
         }
+        return started;
     }
 
     void reset() {
