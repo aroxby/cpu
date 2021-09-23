@@ -82,6 +82,31 @@ bool GenericCPU::readNextByte(ByteString &buffer, const void * const base) {
     return ret;
 }
 
+int GenericCPU::readInstruction(const void * const instructionBase, const Instruction **out) {
+    ByteString opcode;
+    bool memoryRc;
+    int decodeRc;
+
+    do {
+        memoryRc = readNextByte(opcode, instructionBase);
+        if(memoryRc) {
+            decodeRc = set.decode(opcode, out);
+        }
+    } while(
+        memoryRc && (decodeRc == ERR_CONFLICT || decodeRc == ERR_INCOMPLETE)
+    );
+
+    if(!memoryRc) {
+        return ERR_CONFLICT;
+    }
+
+    if(decodeRc != ERR_SUCCESS) {
+        return ERR_BADRANGE;
+    } else {
+        return ERR_SUCCESS;
+    }
+}
+
 // FIXME: Broken function.  Break up into smaller functions
 void GenericCPU::nextInstruction() {
     ByteString opcode;

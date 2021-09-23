@@ -205,3 +205,45 @@ TEST_F(GENERICCPU_TEST_CLASS, readNextByteFailure) {
 
     while(bytesToRead-- && cpu.readNextByte(buffer, baseAddr)) { }
 }
+
+TEST_F(GENERICCPU_TEST_CLASS, readInstructionSuccess) {
+    const void * const baseAddr = (void*)0x1234;
+    const Instruction *instr;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_SUCCESS));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce(testing::Return(ERR_SUCCESS));
+
+    int instructionRc = cpu.readInstruction(baseAddr, &instr);
+    ASSERT_EQ(instructionRc, ERR_SUCCESS) << "Failed to decode instruction";
+}
+
+TEST_F(GENERICCPU_TEST_CLASS, readInstructionMemoryError) {
+    const void * const baseAddr = (void*)0x1234;
+    const Instruction *instr;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_BADRANGE));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE));
+
+    int instructionRc = cpu.readInstruction(baseAddr, &instr);
+    ASSERT_EQ(instructionRc, ERR_CONFLICT) << "Failed to detect memory failure";
+}
+
+TEST_F(GENERICCPU_TEST_CLASS, readInstructionInstructionError) {
+    const void * const baseAddr = (void*)0x1234;
+    const Instruction *instr;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_SUCCESS));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce(testing::Return(ERR_BADRANGE));
+
+    int instructionRc = cpu.readInstruction(baseAddr, &instr);
+    ASSERT_EQ(instructionRc, ERR_BADRANGE) << "Failed to detect invalid instruction";
+}

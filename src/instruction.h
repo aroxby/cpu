@@ -28,7 +28,7 @@ public:
 
     int add(const Instruction &instruction);
     int remove(const ByteString &opcode);
-    int decode(const ByteString &opcode, const Instruction **out) const;
+    MOCKABLE int decode(const ByteString &opcode, const Instruction **out) const;
     SizeType count() const;
 
 private:
