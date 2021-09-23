@@ -45,14 +45,14 @@ public:
     GenericCPU(const System &sys, const InstructionSet &set, Interrupt badInstruction, Interrupt badOperand);
     virtual void tick();
 
-    virtual SizeType registerWidth() = 0;
     virtual void *instructionPointer() = 0;
     virtual bool interruptsEnabled() = 0;
 
-private:
-    void nextInstruction();
-    bool loadNextByte(ByteString &buffer, const void * const base);
+protected:
     bool readBytes(ByteString &buffer, const void * const base, SizeType length);
+    bool readNextByte(ByteString &buffer, const void * const base);
+    int readInstruction(const void * const instructionBase, const Instruction **out);
+    void nextInstruction();
 
     const InstructionSet &set;
     Interrupt badInstruction;

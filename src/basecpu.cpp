@@ -63,7 +63,12 @@ void GenericCPU::tick() {
     }
 }
 
-bool GenericCPU::loadNextByte(ByteString &buffer, const void * const base) {
+bool GenericCPU::readBytes(ByteString &buffer, const void * const base, SizeType length) {
+    buffer.reserve(length);
+    return readMemory((SizeType)base, length, buffer.data()) == ERR_SUCCESS;
+}
+
+bool GenericCPU::readNextByte(ByteString &buffer, const void * const base) {
     bool ret = false;
     byte next;
     SizeType nextAddr = ((SizeType)base) + buffer.size();
@@ -77,11 +82,7 @@ bool GenericCPU::loadNextByte(ByteString &buffer, const void * const base) {
     return ret;
 }
 
-bool GenericCPU::readBytes(ByteString &buffer, const void * const base, SizeType length) {
-    buffer.reserve(length);
-    return readMemory((SizeType)base, length, buffer.data()) == ERR_SUCCESS;
-}
-
+// FIXME: Broken function.  Break up into smaller functions
 void GenericCPU::nextInstruction() {
     ByteString opcode;
     int decodeRc = ERR_SUCCESS;
@@ -90,7 +91,7 @@ void GenericCPU::nextInstruction() {
     const Instruction *inst;
 
     do {
-        if(loadNextByte(opcode, instructionBase))
+        if(readNextByte(opcode, instructionBase))
         {
             signalInterrupt(badOperand);
         } else {
