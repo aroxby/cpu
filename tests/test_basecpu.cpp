@@ -116,13 +116,13 @@ TEST_F(TEST_CLASS, TestInterruptService) {
 
 TEST_F(TEST_CLASS, TestSystemPassThru) {
     // These constants aren't important.  I just wanted to make sure calls aren't crossed
-    EXPECT_CALL(dummySystem, readMemory(2, 1, 0)).WillOnce(testing::Return(ERR_SUCCESS));
-    EXPECT_CALL(dummySystem, writeMemory(1, 2, 0)).WillOnce(testing::Return(ERR_SUCCESS));
-    EXPECT_CALL(dummySystem, readPort(2, 3, 0)).WillOnce(testing::Return(ERR_SUCCESS));
-    EXPECT_CALL(dummySystem, writePort(2, 4, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, readMemory(1, 2, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, writeMemory(7, 8, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, readPort(5, 6, 0)).WillOnce(testing::Return(ERR_SUCCESS));
+    EXPECT_CALL(dummySystem, writePort(3, 4, 0)).WillOnce(testing::Return(ERR_SUCCESS));
 
-    cpu.doReadMemory(2, 1, 0);
-    cpu.doWriteMemory(1, 2, 0);
-    cpu.doReadPort(2, 3, 0);
-    cpu.doWritePort(2, 4, 0);
+    cpu.doReadMemory(1, 2, 0);
+    cpu.doWriteMemory(7, 8, 0);
+    cpu.doReadPort(5, 6, 0);
+    cpu.doWritePort(3, 4, 0);
 }
