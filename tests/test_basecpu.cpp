@@ -11,11 +11,8 @@ public:
         maxTicks(maxTicks), resets(0), startups(0), ticks(0), BaseCPU(sys) { }
 
     virtual bool startup() {
-        bool started = BaseCPU::startup();
-        if(started) {
-            startups++;
-        }
-        return started;
+        startups++;
+        return BaseCPU::startup();
     }
 
     void reset() {
@@ -26,7 +23,6 @@ public:
         assert(isRunning());
         ticks++;
         if(ticks>= maxTicks) {
-            startup();  // Seems weird but we do this to test for double start
             stop();
         }
     }
