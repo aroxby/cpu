@@ -1,18 +1,9 @@
 #include <gtest/gtest.h>
 #include <errors.h>
 #include <instruction.h>
+#include "dummy_instruction.h"
 
 #define TEST_CLASS InstructionSetTest
-
-class DummyInstruction : public Instruction {
-public:
-    DummyInstruction(ByteString opcode, SizeType instructionLength)
-        : Instruction(opcode, instructionLength) {
-    }
-
-    virtual void execute(BaseCPU &cpu, const ByteString &params) const {
-    }
-};
 
 class TEST_CLASS : public testing::Test {
 protected:

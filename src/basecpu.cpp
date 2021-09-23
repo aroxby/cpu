@@ -40,14 +40,18 @@ int BaseCPU::writePort(PortType port, SizeType len, const void *data) const {
 }
 
 void Interruptable::signalInterrupt(Interrupt interrupt) {
-    queue.push(interrupt);
+    interruptQueue.push(interrupt);
+}
+
+SizeType Interruptable::interruptQueueLength() {
+    return interruptQueue.size();
 }
 
 bool Interruptable::serviceNextInterrupt() {
     bool ret = false;
-    if(!queue.empty()) {
-        serviceInterrupt(queue.front());
-        queue.pop();
+    if(!interruptQueue.empty()) {
+        serviceInterrupt(interruptQueue.front());
+        interruptQueue.pop();
         ret = true;
     }
     return ret;
@@ -104,6 +108,30 @@ int GenericCPU::readInstruction(const void * const instructionBase, const Instru
         return ERR_BADRANGE;
     } else {
         return ERR_SUCCESS;
+    }
+}
+
+bool GenericCPU::readInstructionOperands(
+    const void * const instructionBase,
+    const Instruction &instruction,
+    ByteString &operands
+) {
+    const void * const operandBase = (void*)((char*)instructionBase + instruction.opcode.size());
+    return readBytes(operands, operandBase, instruction.length);
+}
+
+void GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString &operands) {
+    const void * const instructionBase = instructionPointer();
+    int instructionRc = readInstruction(instructionBase, instruction);
+    if(instructionRc == ERR_SUCCESS) {
+        bool operandRc = readInstructionOperands(instructionBase, **instruction, operands);
+        if(!operandRc) {
+            signalInterrupt(badOperand);
+        }
+    } else if(instructionRc == ERR_CONFLICT) {
+        signalInterrupt(badOperand);
+    } else if(instructionRc == ERR_BADRANGE) {
+        signalInterrupt(badInstruction);
     }
 }
 

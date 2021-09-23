@@ -30,6 +30,7 @@ private:
 class Interruptable {
 public:
     virtual void signalInterrupt(Interrupt interrupt);
+    SizeType interruptQueueLength();
 
 protected:
     virtual bool serviceNextInterrupt();
@@ -37,7 +38,7 @@ protected:
 
 private:
     typedef std::queue<Interrupt> InterruptQueue;
-    InterruptQueue queue;
+    InterruptQueue interruptQueue;
 };
 
 class GenericCPU : public BaseCPU, public Interruptable {
@@ -52,6 +53,10 @@ protected:
     bool readBytes(ByteString &buffer, const void * const base, SizeType length);
     bool readNextByte(ByteString &buffer, const void * const base);
     int readInstruction(const void * const instructionBase, const Instruction **out);
+    bool readInstructionOperands(
+        const void * const instructionBase, const Instruction &instruction, ByteString &operands
+    );
+    void loadNextInstruction(const Instruction **instruction, ByteString &operands);
     void nextInstruction();
 
     const InstructionSet &set;

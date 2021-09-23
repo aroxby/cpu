@@ -1,11 +1,15 @@
 #include <gtest/gtest.h>
 #include <errors.h>
 #include <basecpu.h>
+#include "dummy_instruction.h"
 #include "mock_instruction.h"
 #include "mock_system.h"
 
 #define BASECPU_TEST_CLASS BaseCPUTest
 #define GENERICCPU_TEST_CLASS GenericCPUTest
+
+#define GENERICCPU_BAD_OPERAND_INT 1
+#define GENERICCPU_BAD_INSTRUCTION_INT 2
 
 class BaseTestCPU : public BaseCPU {
 public:
@@ -54,18 +58,19 @@ public:
 class TestInterruptable : public Interruptable {
 public:
     virtual void serviceInterrupt(Interrupt interrupt) {
-        serviced.push_back(interrupt);
+        servicedInterrupts.push_back(interrupt);
     }
 
-    bool _next() { return serviceNextInterrupt(); }
+    bool _nextI() { return serviceNextInterrupt(); }
 
-    std::vector<Interrupt> serviced;
+    std::vector<Interrupt> servicedInterrupts;
 };
 
-class GenericTestCPU : public GenericCPU {
+class GenericTestCPU : public GenericCPU, public TestInterruptable {
 public:
     GenericTestCPU(const System &sys, const InstructionSet &set) :
-        GenericCPU(sys, set, 1, 2), ip(nullptr), interruptable(true), resets(0) { }
+        GenericCPU(sys, set, GENERICCPU_BAD_INSTRUCTION_INT, GENERICCPU_BAD_OPERAND_INT),
+        ip(nullptr), interruptable(true), resets(0) { }
 
     void *instructionPointer() { return ip; }
     bool interruptsEnabled() { return interruptable; }
@@ -74,8 +79,16 @@ public:
         resets++;
     }
 
+    SizeType interruptQueueLength() {
+        return GenericCPU::interruptQueueLength();
+    }
+
+    bool serviceNextInterrupt() {
+        return GenericCPU::serviceNextInterrupt();
+    }
+
     void serviceInterrupt(Interrupt interrupt) {
-        interruptService.serviceInterrupt(interrupt);
+        TestInterruptable::serviceInterrupt(interrupt);
     }
 
     bool readNextByte(ByteString &buffer, const void * const base) {
@@ -86,11 +99,20 @@ public:
         return GenericCPU::readInstruction(instructionBase, out);
     }
 
-    TestInterruptable interruptService;
+    void loadNextInstruction(const Instruction **instruction, ByteString &operands) {
+        return GenericCPU::loadNextInstruction(instruction, operands);
+    }
+
     void *ip;
     bool interruptable;
     int resets;
 };
+
+int buildDummyInstruction(const ByteString &opcode, const Instruction **out) {
+    // FIXME: Memory leak
+    *out = new DummyInstruction(opcode, 2);
+    return ERR_SUCCESS;
+}
 
 const int TEST_TICK_COUNT = 3;
 
@@ -134,16 +156,16 @@ TEST_F(BASECPU_TEST_CLASS, TestStopStart) {
 }
 
 TEST_F(BASECPU_TEST_CLASS, TestInterruptService) {
-    ASSERT_FALSE(server._next()) << "Incorrect service of empty queue";
+    ASSERT_FALSE(server._nextI()) << "Incorrect service of empty queue";
     server.signalInterrupt(3);
     server.signalInterrupt(5);
-    ASSERT_TRUE(server._next()) << "Failed to service queue";
-    ASSERT_EQ(server.serviced.size(), 1) << "Incorrect number of interrupts serviced";
-    ASSERT_EQ(server.serviced.at(0), 3) << "Incorrect interrupt serviced";
-    ASSERT_TRUE(server._next()) << "Failed to service queue";
-    ASSERT_EQ(server.serviced.size(), 2) << "Incorrect number of interrupts serviced";
-    ASSERT_EQ(server.serviced.at(1), 5) << "Incorrect interrupt serviced";
-    ASSERT_FALSE(server._next()) << "Incorrect service of empty queue";
+    ASSERT_TRUE(server._nextI()) << "Failed to service queue";
+    ASSERT_EQ(server.servicedInterrupts.size(), 1) << "Incorrect number of interrupts serviced";
+    ASSERT_EQ(server.servicedInterrupts.at(0), 3) << "Incorrect interrupt serviced";
+    ASSERT_TRUE(server._nextI()) << "Failed to service queue";
+    ASSERT_EQ(server.servicedInterrupts.size(), 2) << "Incorrect number of interrupts serviced";
+    ASSERT_EQ(server.servicedInterrupts.at(1), 5) << "Incorrect interrupt serviced";
+    ASSERT_FALSE(server._nextI()) << "Incorrect service of empty queue";
 }
 
 TEST_F(BASECPU_TEST_CLASS, TestSystemPassThru) {
@@ -239,11 +261,63 @@ TEST_F(GENERICCPU_TEST_CLASS, readInstructionInstructionError) {
     const Instruction *instr;
 
     EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
-        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_SUCCESS));
+        .Times(2).WillRepeatedly(testing::Return(ERR_SUCCESS));
 
     EXPECT_CALL(dummySet, decode(::testing::_, &instr))
         .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce(testing::Return(ERR_BADRANGE));
 
     int instructionRc = cpu.readInstruction(baseAddr, &instr);
     ASSERT_EQ(instructionRc, ERR_BADRANGE) << "Failed to detect invalid instruction";
+}
+
+TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionSuccess) {
+    const Instruction *instr;
+    ByteString operands;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_SUCCESS));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce((testing::Invoke(buildDummyInstruction)));
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 2, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS));
+
+    cpu.loadNextInstruction(&instr, operands);
+
+    ASSERT_EQ(cpu.interruptQueueLength(), 0) << "CPU fault loading instruction";
+}
+
+TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionMemoryError) {
+    const Instruction *instr;
+    ByteString operands;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_BADRANGE));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE));
+
+    cpu.loadNextInstruction(&instr, operands);
+    ASSERT_EQ(cpu.interruptQueueLength(), 1) << "Memory error did not trigger CPU fault";
+    cpu.serviceNextInterrupt();
+    ASSERT_EQ(*cpu.servicedInterrupts.begin(), GENERICCPU_BAD_OPERAND_INT)
+        << "Incorrect interrupt trigger by memory fault";
+}
+
+TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionInstructionError) {
+    const Instruction *instr;
+    ByteString operands;
+
+    EXPECT_CALL(dummySystem, readMemory(::testing::_, 1, ::testing::_))
+        .Times(2).WillRepeatedly(testing::Return(ERR_SUCCESS));
+
+    EXPECT_CALL(dummySet, decode(::testing::_, &instr))
+        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce(testing::Return(ERR_BADRANGE));
+
+    cpu.loadNextInstruction(&instr, operands);
+    ASSERT_EQ(cpu.interruptQueueLength(), 1) << "Invalid instruction did not trigger CPU fault";
+    cpu.serviceNextInterrupt();
+    ASSERT_EQ(*cpu.servicedInterrupts.begin(), GENERICCPU_BAD_INSTRUCTION_INT)
+        << "Incorrect interrupt trigger by invalid instruction";
 }
