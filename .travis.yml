@@ -1,6 +1,5 @@
 language: cpp
 services: docker
-before_install: pip install --upgrade --user cpp-coveralls
 install: docker build -t $TRAVIS_REPO_SLUG .
 script:
   - env | sort
