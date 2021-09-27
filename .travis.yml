@@ -2,4 +2,8 @@ language: cpp
 services: docker
 before_install: pip install --upgrade --user cpp-coveralls
 install: docker build -t $TRAVIS_REPO_SLUG .
-script: docker run --rm -v $(pwd):/src:Z $TRAVIS_REPO_SLUG make test-coverage
+script:
+  - env | sort
+  - docker run --rm -v $(pwd):/src:Z \
+    -E COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN \
+    $TRAVIS_REPO_SLUG make test-coverage
