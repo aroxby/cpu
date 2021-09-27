@@ -82,6 +82,9 @@ $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 test: $(TEST_OUT)
 	$<
 
+test-coverage: test
+	coveralls -e external -e tests
+
 test-tidy:
 	rm -f $(TEST_OBJS)
 

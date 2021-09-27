@@ -1,6 +1,6 @@
 FROM ubuntu
 
-RUN apt-get update && apt-get -y install build-essential git
+RUN apt-get update && apt-get -y install build-essential git ruby-coveralls
 
 COPY . /src
 WORKDIR src
