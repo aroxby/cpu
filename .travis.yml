@@ -4,5 +4,5 @@ install: docker build -t $TRAVIS_REPO_SLUG .
 script:
   - env | sort
   - docker run --rm -v $(pwd):/src:Z
-    -E COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN
+    -E TRAVIS_JOB_ID=$TRAVIS_JOB_ID
     $TRAVIS_REPO_SLUG make test-coverage
