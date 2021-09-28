@@ -48,7 +48,7 @@ AR=ar
 GIT=git
 CPP=g++
 
-.PHONY: default depend test test-tidy test-clean clean dist-clean maintainer-clean
+.PHONY: coveralls default depend test test-tidy test-clean clean dist-clean maintainer-clean
 
 default: all
 
@@ -82,7 +82,7 @@ $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 test: $(TEST_OUT)
 	$<
 
-test-coverage: test
+coveralls: test
 	coveralls -b . -e external -e tests
 
 test-tidy:

@@ -5,4 +5,4 @@ script:
   - env | sort
   - docker run --rm -v $(pwd):/src:Z
     -e TRAVIS_JOB_ID=$TRAVIS_JOB_ID
-    $TRAVIS_REPO_SLUG make test-coverage
+    $TRAVIS_REPO_SLUG make coveralls
