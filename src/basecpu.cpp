@@ -123,7 +123,7 @@ bool GenericCPU::readInstructionOperands(
 
 bool GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString &operands) {
     bool instructionLoaded = false;
-    const void * const instructionBase = instructionPointer();
+    const void * const instructionBase = getInstructionPointer();
     int instructionRc = readInstruction(instructionBase, instruction);
     if(instructionRc == ERR_SUCCESS) {
         bool operandRc = readInstructionOperands(instructionBase, **instruction, operands);
@@ -145,7 +145,7 @@ bool GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString
 void GenericCPU::nextInstruction() {
     ByteString opcode;
     int decodeRc = ERR_SUCCESS;
-    const void * const instructionBase = instructionPointer();
+    const void * const instructionBase = getInstructionPointer();
     // FIXME: Shouldn't HAVE to be const
     const Instruction *inst;
 

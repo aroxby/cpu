@@ -72,7 +72,8 @@ public:
         GenericCPU(sys, set, GENERICCPU_BAD_INSTRUCTION_INT, GENERICCPU_BAD_OPERAND_INT),
         ip(nullptr), interruptable(true), resets(0) { }
 
-    void *instructionPointer() { return ip; }
+    void *getInstructionPointer() { return ip; }
+    void setInstructionPointer(void *ip) { this->ip = ip; }
     bool interruptsEnabled() { return interruptable; }
 
     void reset() {

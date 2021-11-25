@@ -46,7 +46,8 @@ public:
     GenericCPU(const System &sys, const InstructionSet &set, Interrupt badInstruction, Interrupt badOperand);
     virtual void tick();
 
-    virtual void *instructionPointer() = 0;
+    virtual void *getInstructionPointer() = 0;
+    virtual void setInstructionPointer(void *ip) = 0;
     virtual bool interruptsEnabled() = 0;
 
 protected:
