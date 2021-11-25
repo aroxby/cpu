@@ -99,7 +99,7 @@ public:
         return GenericCPU::readInstruction(instructionBase, out);
     }
 
-    void loadNextInstruction(const Instruction **instruction, ByteString &operands) {
+    bool loadNextInstruction(const Instruction **instruction, ByteString &operands) {
         return GenericCPU::loadNextInstruction(instruction, operands);
     }
 
