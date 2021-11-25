@@ -63,6 +63,7 @@ GenericCPU::GenericCPU(const System &sys, const InstructionSet &set, Interrupt b
 }
 
 void GenericCPU::tick() {
+    // FIXME: Should service the entire interrupt queue (not just the one)
     if(!(interruptsEnabled() && serviceNextInterrupt())) {
         nextInstruction();
     }
