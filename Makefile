@@ -39,11 +39,6 @@ SRCS=$(shell find $(SRC_DIR) -name *.cpp)
 OBJS=$(subst .cpp,.o,$(SRCS))
 TOBJS=$(subst .o,.t.o,$(OBJS))
 
-OBJ_COVERS=$(subst .o,.gcda,$(TOBJS))
-OBJ_COVERS+=$(subst .o,.gcno,$(TOBJS))
-TST_COVERS=$(subst .o,.gcda,$(TEST_OBJS))
-TST_COVERS+=$(subst .o,.gcno,$(TEST_OBJS))
-
 AR=ar
 GIT=git
 CPP=g++
@@ -91,8 +86,8 @@ test-tidy:
 test-clean: test-tidy
 	rm -f $(TEST_OUT)
 	rm -f $(TOBJS)
-	rm -f $(OBJ_COVERS)
-	rm -f $(TST_COVERS)
+	rm -f $(SRC_DIR)/*.{gcda,gcov,gcno}
+	rm -f $(TEST_DIR)/*.{gcda,gcov,gcno}
 
 tidy: test-tidy
 	rm -f $(OBJS)
