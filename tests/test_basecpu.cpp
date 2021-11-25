@@ -283,9 +283,10 @@ TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionSuccess) {
     EXPECT_CALL(dummySystem, readMemory(::testing::_, 2, ::testing::_))
         .WillOnce(testing::Return(ERR_SUCCESS));
 
-    cpu.loadNextInstruction(&instr, operands);
+    bool loadRc = cpu.loadNextInstruction(&instr, operands);
 
     ASSERT_EQ(cpu.interruptQueueLength(), 0) << "CPU fault loading instruction";
+    ASSERT_EQ(loadRc, true) << "Instruction load failure indicated";
 }
 
 TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionMemoryError) {
@@ -298,11 +299,14 @@ TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionMemoryError) {
     EXPECT_CALL(dummySet, decode(::testing::_, &instr))
         .WillOnce(testing::Return(ERR_INCOMPLETE));
 
-    cpu.loadNextInstruction(&instr, operands);
+    bool loadRc = cpu.loadNextInstruction(&instr, operands);
+
     ASSERT_EQ(cpu.interruptQueueLength(), 1) << "Memory error did not trigger CPU fault";
     cpu.serviceNextInterrupt();
     ASSERT_EQ(*cpu.servicedInterrupts.begin(), GENERICCPU_BAD_OPERAND_INT)
         << "Incorrect interrupt trigger by memory fault";
+
+    ASSERT_EQ(loadRc, false) << "Instruction load failure not indicated";
 }
 
 TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionInstructionError) {
@@ -315,9 +319,12 @@ TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionInstructionError) {
     EXPECT_CALL(dummySet, decode(::testing::_, &instr))
         .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce(testing::Return(ERR_BADRANGE));
 
-    cpu.loadNextInstruction(&instr, operands);
+    bool loadRc = cpu.loadNextInstruction(&instr, operands);
+
     ASSERT_EQ(cpu.interruptQueueLength(), 1) << "Invalid instruction did not trigger CPU fault";
     cpu.serviceNextInterrupt();
     ASSERT_EQ(*cpu.servicedInterrupts.begin(), GENERICCPU_BAD_INSTRUCTION_INT)
         << "Incorrect interrupt trigger by invalid instruction";
+
+    ASSERT_EQ(loadRc, false) << "Instruction load failure not indicated";
 }

@@ -120,19 +120,24 @@ bool GenericCPU::readInstructionOperands(
     return readBytes(operands, operandBase, instruction.length);
 }
 
-void GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString &operands) {
+bool GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString &operands) {
+    bool instructionLoaded = false;
     const void * const instructionBase = instructionPointer();
     int instructionRc = readInstruction(instructionBase, instruction);
     if(instructionRc == ERR_SUCCESS) {
         bool operandRc = readInstructionOperands(instructionBase, **instruction, operands);
         if(!operandRc) {
             signalInterrupt(badOperand);
+        } else {
+            instructionLoaded = true;
         }
     } else if(instructionRc == ERR_CONFLICT) {
         signalInterrupt(badOperand);
     } else if(instructionRc == ERR_BADRANGE) {
         signalInterrupt(badInstruction);
     }
+
+    return instructionLoaded;
 }
 
 // FIXME: Broken function.  Break up into smaller functions

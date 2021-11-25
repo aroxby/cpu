@@ -56,7 +56,7 @@ protected:
     bool readInstructionOperands(
         const void * const instructionBase, const Instruction &instruction, ByteString &operands
     );
-    void loadNextInstruction(const Instruction **instruction, ByteString &operands);
+    bool loadNextInstruction(const Instruction **instruction, ByteString &operands);
 
     const InstructionSet &set;
     Interrupt badInstruction;
