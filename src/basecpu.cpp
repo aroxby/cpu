@@ -1,5 +1,6 @@
 #include "basecpu.h"
 #include "errors.h"
+#include "utils.h"
 
 BaseCPU::BaseCPU(const System &sys): sys(sys), running(false) {
 }
@@ -116,7 +117,7 @@ bool GenericCPU::readInstructionOperands(
     const Instruction &instruction,
     ByteString &operands
 ) {
-    const void * const operandBase = (void*)((char*)instructionBase + instruction.opcode.size());
+    const void * const operandBase = advancePtr(instructionBase, instruction.opcode.size());
     return readBytes(operands, operandBase, instruction.length);
 }
 
