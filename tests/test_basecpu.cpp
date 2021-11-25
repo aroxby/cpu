@@ -181,7 +181,7 @@ TEST_F(BASECPU_TEST_CLASS, TestSystemPassThru) {
     cpu.doWritePort(3, 4, 0);
 }
 
-TEST_F(BASECPU_TEST_CLASS, TestReadInstruction) {
+TEST_F(BASECPU_TEST_CLASS, TestStartup) {
     ASSERT_FALSE(cpu.isRunning()) << "Incorrect initial CPU running state";
     ASSERT_EQ(cpu.ticks, 0) << "Incorrect initial CPU tick count";
     ASSERT_EQ(cpu.resets, 0) << "Incorrect initial CPU reset count";
