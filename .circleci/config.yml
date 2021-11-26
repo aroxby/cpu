@@ -18,7 +18,12 @@ jobs:
     steps:
       - setup_remote_docker
       - run:
-          name: Run Docker Tests
+          name: Debug
+          command: |
+            set -x ;
+            echo docker run --rm
+            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM
+            $CIRCLE_PROJECT_REPONAME make coveralls
           command: |
             docker run --rm
             -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM
