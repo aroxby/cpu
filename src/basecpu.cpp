@@ -142,35 +142,14 @@ bool GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString
     return instructionLoaded;
 }
 
-// FIXME: Broken function.  Break up into smaller functions
 void GenericCPU::nextInstruction() {
-    ByteString opcode;
-    int decodeRc = ERR_SUCCESS;
-    const void * const instructionBase = getInstructionPointer();
-    // FIXME: Shouldn't HAVE to be const
-    const Instruction *inst;
+    const Instruction *instruction;
+    ByteString operands;
 
-    do {
-        if(readNextByte(opcode, instructionBase))
-        {
-            signalInterrupt(badOperand);
-        } else {
-            decodeRc = set.decode(opcode, &inst);
-        }
-    } while(decodeRc == ERR_CONFLICT || decodeRc == ERR_INCOMPLETE);
-
-    if(decodeRc != ERR_SUCCESS) {
-        signalInterrupt(badInstruction);
-    } else {
-        SizeType operandLength = inst->length;
-        SizeType offset = opcode.size();
-        ByteString operands;
-        if(!readBytes(operands, instructionBase, operandLength)) {
-            signalInterrupt(badOperand);
-        } else {
-            // FIXME: Advance instruction pointer
-            // It's import this be done before running the instruction for things like RST to work
-            inst->execute(*this, operands);
-        }
-    }
+    if(loadNextInstruction(&instruction, operands)) {
+        SizeType totalInstuctionLength = instruction->opcode.size() + instruction->length;
+        void *oldInstructionPointer = getInstructionPointer();
+        setInstructionPointer(advancePtr(oldInstructionPointer, totalInstuctionLength));
+        instruction->execute(*this, operands);
+    } else { /* Interrupts should handle this case */ }
 }
