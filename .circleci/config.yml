@@ -7,7 +7,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: env | sort
       - run:
           name: Build Docker Container
           command: docker build -t $CIRCLE_PROJECT_REPONAME .
