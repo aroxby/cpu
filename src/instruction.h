@@ -14,6 +14,7 @@ public:
     Instruction(ByteString opcode, SizeType instructionLength);
     virtual void execute(BaseCPU &cpu, const ByteString &params) const = 0;
     const ByteString opcode;
+    // FIXME: Total length is opcode.size() + length?
     const SizeType length;
 };
 
