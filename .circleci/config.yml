@@ -6,6 +6,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - setup_remote_docker
       - run: env | sort
       - run:
           name: Build Docker Container
@@ -15,6 +16,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+        - setup_remote_docker
       - run:
           name: Run Docker Tests
           command: |
