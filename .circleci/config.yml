@@ -1,0 +1,29 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: env | sort
+      - run:
+          name: Build Docker Container
+          command: docker build -t $CIRCLE_PROJECT_REPONAME .
+
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Run Docker Tests
+          command: |
+            docker run --rm
+            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM
+            $CIRCLE_PROJECT_REPONAME make coveralls
+
+workflows:
+  default:
+    jobs:
+      - build
+      - test
