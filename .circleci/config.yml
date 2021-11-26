@@ -16,7 +16,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-        - setup_remote_docker
+      - setup_remote_docker
       - run:
           name: Run Docker Tests
           command: |
