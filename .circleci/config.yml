@@ -13,7 +13,7 @@ jobs:
           command: |
             ls -la .git
             cat .git/HEAD
-            docker run --rm -v $(pwd)/.git:/app/.git:ro,Z \
+            docker run --rm -v $(pwd)/.git:/app/.git \
             cimg/base:stable \
             sh -c "set +x; cd /app; ls -la .git; cat .git/HEAD"
       - run:
