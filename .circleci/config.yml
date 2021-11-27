@@ -9,14 +9,15 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Build Docker Container
-          command: docker build -t app .
-      - run:
           name: Git debug
           command: |
-            set -x
             ls -la .git
             cat .git/HEAD
+            docker run --rm -v $(pwd)/.git:/app/.git:ro,Z \
+            cimg/base:stable sh -c "ls -la .git ; cat .git/HEAD"
+      - run:
+          name: Build Docker Container
+          command: docker build -t app .
       - run:
           name: Run Docker Tests
           command: |
