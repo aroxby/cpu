@@ -15,6 +15,7 @@ jobs:
             ls -la $(pwd)/.git
             cat $(pwd)/.git/HEAD
             echo `pwd`
+            docker images
             docker run --rm \
             --mount type=bind,source=`pwd`/.git,target=/app/.git,readonly \
             cimg/base:stable \
