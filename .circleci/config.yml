@@ -12,16 +12,12 @@ jobs:
           name: Git debug
           command: |
             set -x
-            ls -la $(pwd)/.git
-            cat $(pwd)/.git/HEAD
-            echo `pwd`
-            docker images
-            echo $SHELL
-            bash -c " \
-            docker run --rm \
-            --mount type=bind,source=$(pwd)/.git,target=/app/.git,readonly \
+            docker create --rm \
+            --name app \
             cimg/base:stable \
-            sh -c 'set -x; cd /app; ls -la .git; cat .git/HEAD'"
+            sh -c 'set -x; cd /app; ls -la .git; cat .git/HEAD'
+            docker cp .git app:/app/.git
+            docker start app
       - run:
           name: Build Docker Container
           command: docker build -t app .
