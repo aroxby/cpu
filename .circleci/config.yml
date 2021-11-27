@@ -16,7 +16,8 @@ jobs:
             --name app \
             cimg/base:stable \
             sh -c 'set -x; cd /app; ls -la .git; cat .git/HEAD'
-            docker exec app mkdir /app
+            mkdir dummy  # really, THIS is the way?
+            docker cp dummy app:/app
             docker cp .git app:/app/.git
             docker start app
       - run:
