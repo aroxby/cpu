@@ -14,7 +14,8 @@ jobs:
             ls -la .git
             cat .git/HEAD
             docker run --rm -v $(pwd)/.git:/app/.git:ro,Z \
-            cimg/base:stable sh -c "ls -la .git ; cat .git/HEAD"
+            cimg/base:stable \
+            sh -c "set +x; cd /app; ls -la .git; cat .git/HEAD"
       - run:
           name: Build Docker Container
           command: docker build -t app .
