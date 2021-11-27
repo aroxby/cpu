@@ -11,8 +11,8 @@ jobs:
       - run:
           name: Git debug
           command: |
-            ls -la .git
-            cat .git/HEAD
+            ls -la $(pwd)/.git
+            cat $(pwd)/.git/HEAD
             docker run --rm -v $(pwd)/.git:/app/.git \
             cimg/base:stable \
             sh -c "set +x; cd /app; ls -la .git; cat .git/HEAD"
