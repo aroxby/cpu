@@ -26,9 +26,12 @@ jobs:
       - run:
           name: Run Docker Tests
           command: |
-            docker run --rm -v $(pwd)/.git:/app/.git:ro,Z \
+            docker create --rm \
             -e TRAVIS_JOB_ID=#$CIRCLE_BUILD_NUM \
+            --name app \
             app make coveralls
+            docker cp .git app:/app/.git
+            docker start -a app
 
 workflows:
   default:
