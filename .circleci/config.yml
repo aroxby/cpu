@@ -12,13 +12,6 @@ jobs:
           name: Build Docker Container
           command: docker build -t $CIRCLE_PROJECT_REPONAME .
       - run:
-          name: Debug
-          command: |
-            set -x
-            docker run --rm \
-            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM \
-            $CIRCLE_PROJECT_REPONAME env | sort
-      - run:
           name: Run Docker Tests
           command: |
             docker run --rm -v $(pwd)/.git:/src/.git:ro,Z
