@@ -81,17 +81,9 @@ test: $(TEST_OUT)
 	echo service_name: circleci > .coveralls.yml
 
 coveralls: test .coveralls.yml
-	echo pwd --
-	pwd
-	echo ls --
-	ls -la
-	echo ls .git --
 	ls -la .git
-	echo cat head --
 	cat .git/HEAD
-	echo git status --
 	git status
-	echo coveralls --
 	coveralls -b . -e external -e tests
 
 test-tidy:

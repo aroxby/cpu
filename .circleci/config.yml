@@ -31,6 +31,12 @@ jobs:
       #     paths:
       #       - docker-app.tar
       - run:
+          name: Git debug
+          command: |
+            set -x
+            ls -la .git
+            cat .git/HEAD
+      - run:
           name: Run Docker Tests
           command: |
             docker run --rm -v $(pwd)/.git:/app/.git:ro,Z \
