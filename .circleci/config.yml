@@ -14,24 +14,22 @@ jobs:
           keys:
             - v1-{{ .Branch }}
           paths:
-            - /caches/app.tar
+            - docker-app.tar
       - run:
           name: Load Docker image layer cache
           command: |
             set +o pipefail
-            docker load -i /caches/app.tar | true
+            docker load -i docker-app.tar | true
       - run:
           name: Build Docker Container
           command: docker build --cache-from=app -t app .
       - run:
           name: Save Docker image layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/app.tar app
+          command: docker save -o docker-app.tar app
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
-            - /caches/app.tar
+            - docker-app.tar
       - run:
           name: Run Docker Tests
           command: |
