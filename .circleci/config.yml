@@ -17,7 +17,9 @@ jobs:
             - /caches/app.tar
       - run:
           name: Load Docker image layer cache
-          command: docker load -i /caches/app.tar | true
+          command: |
+            set +o pipefail
+            docker load -i /caches/app.tar | true
       - run:
           name: Build Docker Container
           command: docker build --cache-from=app -t app .
