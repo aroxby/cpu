@@ -19,7 +19,7 @@ jobs:
             echo $SHELL
             bash -c " \
             docker run --rm \
-            --mount type=bind,source=$pwd/.git,target=/app/.git,readonly \
+            --mount type=bind,source=$(pwd)/.git,target=/app/.git,readonly \
             cimg/base:stable \
             sh -c 'set -x; cd /app; ls -la .git; cat .git/HEAD'"
       - run:
