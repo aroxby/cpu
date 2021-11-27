@@ -77,7 +77,10 @@ $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 test: $(TEST_OUT)
 	$<
 
-coveralls: test
+.coveralls.yml:
+	echo service_name: circleci > .coveralls.yml
+
+coveralls: test .coveralls.yml
 	coveralls -b . -e external -e tests
 
 test-tidy:
