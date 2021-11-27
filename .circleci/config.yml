@@ -19,7 +19,7 @@ jobs:
             mkdir dummy  # really, THIS is the way?
             docker cp dummy app:/app
             docker cp .git app:/app/.git
-            docker start app
+            docker start -a app
       - run:
           name: Build Docker Container
           command: docker build -t app .
