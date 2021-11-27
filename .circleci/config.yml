@@ -20,15 +20,15 @@ jobs:
       - run:
           name: Debug
           command: |
-            set -x ;
-            echo docker run --rm
-            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM
+            set -x
+            echo docker run --rm \
+            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM \
             $CIRCLE_PROJECT_REPONAME make coveralls
       - run:
           name: Run Docker Tests
           command: |
-            docker run --rm
-            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM
+            docker run --rm \
+            -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM \
             $CIRCLE_PROJECT_REPONAME make coveralls
 
 workflows:
