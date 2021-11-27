@@ -85,6 +85,10 @@ coveralls: test .coveralls.yml
 	pwd
 	echo ls --
 	ls -la
+	echo ls .git --
+	ls -la .git
+	echo cat head --
+	cat .git/HEAD
 	echo git status --
 	git status
 	echo coveralls --
