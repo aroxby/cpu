@@ -9,18 +9,6 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Git debug
-          command: |
-            set -x
-            docker create --rm \
-            --name app \
-            cimg/base:stable \
-            sh -c 'set -x; cd /app; ls -la .git; cat .git/HEAD'
-            mkdir dummy  # really, THIS is the way?
-            docker cp dummy app:/app
-            docker cp .git app:/app/.git
-            docker start -a app
-      - run:
           name: Build Docker Container
           command: docker build -t app .
       - run:
@@ -30,6 +18,7 @@ jobs:
             -e TRAVIS_JOB_ID=#$CIRCLE_BUILD_NUM \
             --name app \
             app make coveralls
+	    # CircleCI doesn't allow mounts/volumes on the docker runner
             docker cp .git app:/app/.git
             docker start -a app
 
