@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/aroxby/cpu.svg?branch=master)](https://app.travis-ci.com/aroxby/cpu)
+[![Build Status](https://circleci.com/gh/aroxby/cpu/tree/master.svg?style=shield)](https://circleci.com/gh/aroxby/cpu/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/aroxby/cpu/badge.svg?branch=master)](https://coveralls.io/github/aroxby/cpu?branch=master)
 
 # Virtual CPU
