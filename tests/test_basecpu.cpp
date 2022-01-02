@@ -109,9 +109,9 @@ public:
     int resets;
 };
 
-int buildDummyInstruction(const ByteString &opcode, const Instruction **out) {
-    // FIXME: Memory leak
-    *out = new DummyInstruction(opcode, 2);
+int fillDummyInstruction(const ByteString &opcode, const Instruction **out) {
+    const static DummyInstruction dummyInstruction(opcode, 2);
+    *out = &dummyInstruction;
     return ERR_SUCCESS;
 }
 
@@ -279,7 +279,7 @@ TEST_F(GENERICCPU_TEST_CLASS, loadNextInstructionSuccess) {
         .WillOnce(testing::Return(ERR_SUCCESS)).WillOnce(testing::Return(ERR_SUCCESS));
 
     EXPECT_CALL(dummySet, decode(::testing::_, &instr))
-        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce((testing::Invoke(buildDummyInstruction)));
+        .WillOnce(testing::Return(ERR_INCOMPLETE)).WillOnce((testing::Invoke(fillDummyInstruction)));
 
     EXPECT_CALL(dummySystem, readMemory(::testing::_, 2, ::testing::_))
         .WillOnce(testing::Return(ERR_SUCCESS));
