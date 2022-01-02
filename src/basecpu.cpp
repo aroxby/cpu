@@ -123,7 +123,7 @@ bool GenericCPU::readInstructionOperands(
     ByteString &operands
 ) {
     const void * const operandBase = advancePtr(instructionBase, instruction.opcode.size());
-    return readBytes(operands, operandBase, instruction.length);
+    return readBytes(operands, operandBase, instruction.operandLength);
 }
 
 bool GenericCPU::loadNextInstruction(const Instruction **instruction, ByteString &operands) {
@@ -151,7 +151,7 @@ void GenericCPU::nextInstruction() {
     ByteString operands;
 
     if(loadNextInstruction(&instruction, operands)) {
-        SizeType totalInstuctionLength = instruction->opcode.size() + instruction->length;
+        SizeType totalInstuctionLength = instruction->totalLength();
         void *oldInstructionPointer = getInstructionPointer();
         setInstructionPointer(advancePtr(oldInstructionPointer, totalInstuctionLength));
         instruction->execute(*this, operands);

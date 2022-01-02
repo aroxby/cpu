@@ -13,9 +13,11 @@ class Instruction {
 public:
     Instruction(ByteString opcode, SizeType instructionLength);
     virtual void execute(BaseCPU &cpu, const ByteString &params) const = 0;
+
+    SizeType totalLength() const { return opcode.size() + operandLength; }
+
     const ByteString opcode;
-    // FIXME: Total length is opcode.size() + length?
-    const SizeType length;
+    const SizeType operandLength;
 };
 
 class InstructionSet {
