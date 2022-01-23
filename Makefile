@@ -75,7 +75,7 @@ $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 	$(CPP) $(TEST_OBJS) $(TOBJS) -o $@ $(TEST_LD_FLAGS)
 
 test: $(TEST_OUT)
-	$<
+	GTEST_OUTPUT=xml:test-results.xml $<
 
 .coveralls.yml:
 	echo service_name: circleci > .coveralls.yml
