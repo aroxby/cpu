@@ -25,7 +25,7 @@ jobs:
             # Run the tests
             docker start -a app
             # Retrieve the results
-            docker cp app:test-results.xml .
+            docker cp app:/app/test-results.xml .
             # Clean up
             docker rm app
       - store_test_results:
