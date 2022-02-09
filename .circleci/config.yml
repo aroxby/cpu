@@ -21,8 +21,8 @@ jobs:
             $ci_env \
             --name app \
             app make codecov
-            # CircleCI doesn't allow mounts/volumes on the docker runner
-            docker cp .git app:/app/.git  # disabled for testing purposes
+            # # CircleCI doesn't allow mounts/volumes on the docker runner
+            # docker cp .git app:/app/.git  # disabled for testing purposes
             # Run the tests
             docker start -a app
             # Retrieve the results
