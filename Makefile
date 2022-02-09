@@ -82,7 +82,7 @@ gcov: test
 	gcov -r $(TOBJS)
 
 codecov: gcov
-	bash <(curl -s https://codecov.io/bash)
+	bash <(curl -s https://codecov.io/bash) -X gcov
 
 .coveralls.yml:
 	echo service_name: circleci > .coveralls.yml
