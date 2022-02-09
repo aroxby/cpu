@@ -82,7 +82,9 @@ gcov: test
 	gcov -r $(TOBJS)
 
 codecov: gcov
-	bash <(curl -s https://codecov.io/bash) -X gcov
+	curl -Os https://uploader.codecov.io/latest/linux/codecov
+	chmod +x codecov
+	./codecov -X gcov
 
 test-tidy:
 	rm -f $(TEST_OBJS)
