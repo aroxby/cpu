@@ -2,7 +2,7 @@
 #include "errors.h"
 #include "utils.h"
 
-const System::MemoryInstance System::MemoryInstance::null(NULL, 0, 0);
+const System::MemoryInstance System::MemoryInstance::null(nullptr, 0, 0);
 
 int System::installMemory(MemoryModule &mod, SizeType offset, SizeType size) {
     int status = ERR_SUCCESS;
@@ -78,7 +78,7 @@ PortSocket *System::getSocket(PortType port) const {
     auto iterator = ports.find(port);
     PortSocket *sock;
     if(iterator == ports.end()) {
-        sock = NULL;
+        sock = nullptr;
     } else {
         sock = iterator->second;
     }

@@ -249,7 +249,7 @@ TEST_F(TEST_CLASS, TestPortWrite) {
 }
 
 TEST_F(TEST_CLASS, TestUnboundPortReadWrite) {
-    void *buffer = NULL;
+    void *buffer = nullptr;
     int iret;
 
     iret = sys.readPort(1, 10, buffer);
