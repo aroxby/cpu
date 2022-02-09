@@ -44,7 +44,7 @@ GIT=git
 CPP=g++
 SHELL=/bin/bash
 
-.PHONY: codecov coveralls default depend gcov test test-tidy test-clean clean dist-clean
+.PHONY: codecov default depend gcov test test-tidy test-clean clean dist-clean
 
 default: all
 
@@ -83,12 +83,6 @@ gcov: test
 
 codecov: gcov
 	bash <(curl -s https://codecov.io/bash) -X gcov
-
-.coveralls.yml:
-	echo service_name: circleci > .coveralls.yml
-
-coveralls: test .coveralls.yml
-	coveralls --gcov-options=-r -b . -e external -e tests
 
 test-tidy:
 	rm -f $(TEST_OBJS)
