@@ -42,6 +42,7 @@ TOBJS=$(subst .o,.t.o,$(OBJS))
 AR=ar
 GIT=git
 CPP=g++
+SHELL=/bin/bash
 
 .PHONY: codecov coveralls default depend gcov test test-tidy test-clean clean dist-clean
 
