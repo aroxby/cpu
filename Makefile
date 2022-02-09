@@ -43,7 +43,7 @@ AR=ar
 GIT=git
 CPP=g++
 
-.PHONY: gcov coveralls default depend test test-tidy test-clean clean dist-clean
+.PHONY: codecov coveralls default depend gcov test test-tidy test-clean clean dist-clean
 
 default: all
 
@@ -79,6 +79,9 @@ test: $(TEST_OUT)
 
 gcov: test
 	gcov -r $(TOBJS)
+
+codecov: gcov
+	bash <(curl -s https://codecov.io/bash)
 
 .coveralls.yml:
 	echo service_name: circleci > .coveralls.yml

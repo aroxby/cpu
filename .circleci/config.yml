@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  codecov: codecov/codecov@3.2.2
 
 jobs:
   build:
@@ -21,7 +19,7 @@ jobs:
             -e TRAVIS_JOB_ID=$CIRCLE_BUILD_NUM \
             -e COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN \
             --name app \
-            app make coveralls
+            app make codecov
             # # CircleCI doesn't allow mounts/volumes on the docker runner
             # docker cp .git app:/app/.git  # disabled for testing purposes
             # Run the tests
@@ -32,7 +30,6 @@ jobs:
             docker rm app
       - store_test_results:
           path: .
-      - codecov/upload
 
 workflows:
   default:
