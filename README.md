@@ -1,5 +1,5 @@
 [![Build Status](https://circleci.com/gh/aroxby/cpu/tree/master.svg?style=shield)](https://circleci.com/gh/aroxby/cpu/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/aroxby/cpu/badge.svg?branch=master)](https://coveralls.io/github/aroxby/cpu?branch=master)
+[![Coverage Status](https://codecov.io/gh/aroxby/cpu/branch/master/graph/badge.svg?token=3ZSBRQGD5X)](https://codecov.io/gh/aroxby/cpu)
 
 # Virtual CPU
 This my attempt at building a virtual CPU.  This is just for fun and learning.
