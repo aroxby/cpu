@@ -1,4 +1,8 @@
 *.lnk
 *.o
-.*
-external/
+*.gcda
+*.gcno
+*.gcov
+.dockerignore
+/.git/
+/external/
