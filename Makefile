@@ -81,7 +81,7 @@ test: $(TEST_OUT)
 	echo service_name: circleci > .coveralls.yml
 
 coveralls: test .coveralls.yml
-	coveralls --gcov-options=-r -b .
+	coveralls --gcov-options=-r -b . -e external -e tests
 
 test-tidy:
 	rm -f $(TEST_OBJS)
