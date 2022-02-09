@@ -42,8 +42,9 @@ TOBJS=$(subst .o,.t.o,$(OBJS))
 AR=ar
 GIT=git
 CPP=g++
+SHELL=/bin/bash
 
-.PHONY: coveralls default depend test test-tidy test-clean clean dist-clean
+.PHONY: codecov default depend gcov test test-tidy test-clean clean dist-clean
 
 default: all
 
@@ -77,11 +78,13 @@ $(TEST_OUT): $(TEST_OBJS) $(TOBJS)
 test: $(TEST_OUT)
 	GTEST_OUTPUT=xml:test-results.xml $<
 
-.coveralls.yml:
-	echo service_name: circleci > .coveralls.yml
+gcov: test
+	gcov -r $(TOBJS)
 
-coveralls: test .coveralls.yml
-	coveralls --gcov-options=-r -b . -e external -e tests
+codecov: gcov
+	curl -Os https://uploader.codecov.io/latest/linux/codecov
+	chmod +x codecov
+	./codecov -X gcov
 
 test-tidy:
 	rm -f $(TEST_OBJS)
