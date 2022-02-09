@@ -43,7 +43,7 @@ AR=ar
 GIT=git
 CPP=g++
 
-.PHONY: coveralls default depend test test-tidy test-clean clean dist-clean maintainer-clean
+.PHONY: coveralls default depend test test-tidy test-clean clean dist-clean
 
 default: all
 
@@ -99,6 +99,3 @@ clean: tidy test-clean
 
 dist-clean: clean
 	rm -rf $(EXT_DIR)
-
-maintainer-clean: dist-clean
-	git clean -xdf
